@@ -20,8 +20,10 @@ install:
   - conda info -a
 
   # Install OOMMF
-  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION oommf
+  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION oommf tk=8.5
   - source activate test-environment
 
 script:
-  - echo "Test build succeeded"
+  - echo "OOMMF version:"
+  - echo $(~/miniconda/envs/test-oommf/bin/tclsh8.5 ~/envs/test-oommf/stow/oommf.tcl +version)
+  - echo "Test build succeeded."
