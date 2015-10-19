@@ -12,7 +12,7 @@ figures: ${transform_data}
 ${transform_data}:
 	python ../postprocessing.py --transform --software OOMMF
 
-data: dynamic_stage.mif relaxation_stage.mif oommf_postprocessing.py generate_data.sh
+data:
 	./generate_data.sh
 
 figure_clean:
