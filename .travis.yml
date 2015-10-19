@@ -28,10 +28,8 @@ install:
 
 script:
   - conda list
-  - export TCLSH=${CONDA_ROOT}/envs/test-environment/bin/tclsh${TCLTKVERSION}
-  - export CONDA_ROOT=$(conda info --root)
-  - export OOMMFTCL=${CONDA_ROOT}/envs/test-environment/opt/oommf.tcl
-  - ${TCLSH} ${OOMMFTCL} +version
+  - export OOMMFTCL=$HOME/miniconda/envs/test-environment/opt/oommf.tcl
+  - tclsh ${OOMMFTCL} +version
   - make -C src/oommf_scripts data
   - head -n 20 data-generated/dynamic_txyz.txt
   - echo "Test build succeeded."
