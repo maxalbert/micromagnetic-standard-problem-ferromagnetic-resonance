@@ -43,7 +43,7 @@ Specify Oxs_TimeDriver {
     evolver Oxs_RungeKuttaEvolve
     stopping_time 5e-12
     mesh :mesh
-    stage_count 4000
+    stage_count 1
     Ms 8.0e5
     m0 { Oxs_FileVectorField {
         file relax.omf
