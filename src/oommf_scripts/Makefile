@@ -1,6 +1,8 @@
 .PHONY: figure_clean
 .PHONY: data_clean
 
+NEW_DATA_DIR ?= ../../data-generated
+
 transform_data = mxs_ft_abs.npy mys_ft_abs.npy mzs_ft_abs.npy\
 	             mxs_ft_phase.npy mys_ft_phase.npy mzs_ft_phase.npy\
 
@@ -12,19 +14,11 @@ figures: ${transform_data}
 ${transform_data}:
 	python ../postprocessing.py --transform --software OOMMF
 
-data: dynamic_stage.mif relax.omf
-	rm -f dynamic.odt
-
-	tclsh $(OOMMFTCL) boxsi +fg dynamic_stage.mif -exitondone 1
-
-	#extract the txyz file
-	tclsh $(OOMMFTCL) odtcols < "dynamic.odt" 18 14 15 16 > "dynamic_txyz.txt"
-
-	#extract the spatial magnetisation data to 'mxs.npy', 'mys.npy' and 'mzs.npy'
-	python oommf_postprocessing.py
-
-	#And tidy away all of the .omf files
-	rm dynamic-*.omf
+data: dynamic_stage.mif relaxation_stage.mif oommf_postprocessing.py generate_data_oommf.sh
+	mkdir -p $(NEW_DATA_DIR)
+	cp ./generate_data_oommf.sh $(NEW_DATA_DIR)
+	cd $(NEW_DATA_DIR) && ./generate_data_oommf.sh
+	rm $(NEW_DATA_DIR)/generate_data_oommf.sh
 
 relax.omf: relaxation_stage.mif
 	tclsh $(OOMMFTCL) boxsi +fg relaxation_stage.mif -exitondone 1
