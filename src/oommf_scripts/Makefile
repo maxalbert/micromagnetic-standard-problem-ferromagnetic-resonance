@@ -1,8 +1,6 @@
 .PHONY: figure_clean
 .PHONY: data_clean
 
-NEW_DATA_DIR ?= ../../data-generated
-
 transform_data = mxs_ft_abs.npy mys_ft_abs.npy mzs_ft_abs.npy\
 	             mxs_ft_phase.npy mys_ft_phase.npy mzs_ft_phase.npy\
 
@@ -15,10 +13,7 @@ ${transform_data}:
 	python ../postprocessing.py --transform --software OOMMF
 
 data: dynamic_stage.mif relaxation_stage.mif oommf_postprocessing.py generate_data_oommf.sh
-	mkdir -p $(NEW_DATA_DIR)
-	cp ./generate_data_oommf.sh $(NEW_DATA_DIR)
-	cd $(NEW_DATA_DIR) && ./generate_data_oommf.sh
-	rm $(NEW_DATA_DIR)/generate_data_oommf.sh
+	./generate_data_oommf.sh
 
 relax.omf: relaxation_stage.mif
 	tclsh $(OOMMFTCL) boxsi +fg relaxation_stage.mif -exitondone 1
