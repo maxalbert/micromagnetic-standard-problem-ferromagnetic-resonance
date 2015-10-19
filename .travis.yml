@@ -27,7 +27,8 @@ script:
   - echo "OOMMF version:"
   - conda list
   - export CONDA_ROOT=$(conda info --root)
-  #- export OOMMFTCL=${CONDA_ROOT}/envs/test-environment/stow/oommf.tcl
-  #- echo $(~/miniconda/envs/test-environment/bin/tclsh8.5 ~/miniconda/envs/test-environment/stow/oommf.tcl +version)
-  - oommf +version
+  - export OOMMFTCL=${CONDA_ROOT}/envs/test-environment/stow/oommf.tcl
+  - export TCLTKVERSION=8.5
+  - export TCLSH=${CONDA_ROOT}/envs/test-environment/bin/tclsh8.5
+  - ${TCLSH} ${OOMMFTCL} +version
   - echo "Test build succeeded."
