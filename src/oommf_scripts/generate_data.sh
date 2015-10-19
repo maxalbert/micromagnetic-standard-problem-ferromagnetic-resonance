@@ -9,7 +9,7 @@ set -o errexit
 OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
 TIMESTAMP_PRETTY=$(date)
 TIMESTAMP=$(date +%Y%m%d%H%M%S --date="$TIMESTAMP_PRETTY")
-OUTPUT_DIR=../../data-generated-$TIMESTAMP
+OUTPUT_DIR=../../data-generated-oommf-$TIMESTAMP
 
 # Create output directory if it does not exist yet
 mkdir -p $OUTPUT_DIR
