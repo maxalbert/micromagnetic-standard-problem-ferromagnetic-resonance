@@ -26,5 +26,5 @@ install:
 script:
   - echo "OOMMF version:"
   - conda list
-  - echo $(~/miniconda/envs/test-environment/bin/tclsh8.5 ~/envs/test-environment/stow/oommf.tcl +version)
+  - echo $(~/miniconda/envs/test-environment/bin/tclsh8.5 ~/miniconda/envs/test-environment/stow/oommf.tcl +version)
   - echo "Test build succeeded."
