@@ -15,9 +15,5 @@ ${transform_data}:
 data: dynamic_stage.mif relaxation_stage.mif oommf_postprocessing.py generate_data.sh
 	./generate_data.sh
 
-relax.omf: relaxation_stage.mif
-	tclsh $(OOMMFTCL) boxsi +fg relaxation_stage.mif -exitondone 1
-	mv relax-*omf relax.omf
-
 figure_clean:
 	rm -f *.pdf
