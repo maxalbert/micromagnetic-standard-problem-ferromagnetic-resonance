@@ -12,8 +12,8 @@ figures: ${transform_data}
 ${transform_data}:
 	python ../postprocessing.py --transform --software OOMMF
 
-data: dynamic_stage.mif relaxation_stage.mif oommf_postprocessing.py generate_data_oommf.sh
-	./generate_data_oommf.sh
+data: dynamic_stage.mif relaxation_stage.mif oommf_postprocessing.py generate_data.sh
+	./generate_data.sh
 
 relax.omf: relaxation_stage.mif
 	tclsh $(OOMMFTCL) boxsi +fg relaxation_stage.mif -exitondone 1
