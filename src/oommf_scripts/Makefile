@@ -21,16 +21,3 @@ relax.omf: relaxation_stage.mif
 
 figure_clean:
 	rm -f *.pdf
-
-data_clean:
-	rm -f *.omf
-	rm -f *.odt
-	rm -f *.npy
-	rm -f *.txt
-
-clean_all:
-	rm -f *.omf
-	rm -f *.odt
-	rm -f *.pdf
-	rm -f *.npy
-	rm -f *.txt
