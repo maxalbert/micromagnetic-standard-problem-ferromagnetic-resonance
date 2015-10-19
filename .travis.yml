@@ -30,4 +30,6 @@ script:
   - export TCLTKVERSION=8.5
   - export TCLSH=${CONDA_ROOT}/envs/test-environment/bin/tclsh8.5
   - ${TCLSH} ${OOMMFTCL} +version
+  - make -C src/oommf_scripts data
+  - head -n 20 data-generated/dynamic_txyz.txt
   - echo "Test build succeeded."
