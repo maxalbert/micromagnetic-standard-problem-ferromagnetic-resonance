@@ -2,7 +2,7 @@ sudo: false
 language: python
 env:
   global:
-    - TCLTKVERSION=8.6
+    - OOMMFTCL=$HOME/miniconda/opt/oommf.tcl
 python:
   # We don't actually use the Travis Python, but this keeps it organized.
   - "2.7"
@@ -22,7 +22,6 @@ install:
   - conda install -c http://conda.anaconda.org/maxalbert numpy oommf
 
 script:
-  - export OOMMFTCL=$HOME/miniconda/opt/oommf.tcl
   - tclsh ${OOMMFTCL} +version
   - make -C src/oommf_scripts data
   - head -n 20 data-generated/dynamic_txyz.txt
