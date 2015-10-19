@@ -19,5 +19,9 @@ install:
   # Useful for debugging any issues with conda
   - conda info -a
 
+  # Install OOMMF
+  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION oommf
+  - source activate test-environment
+
 script:
   - echo "Test build succeeded"
