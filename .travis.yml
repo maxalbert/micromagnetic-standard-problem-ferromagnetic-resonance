@@ -1,11 +1,11 @@
 sudo: false
 language: python
-env:
-  global:
-    - OOMMFTCL=$HOME/miniconda/opt/oommf.tcl
 python:
   # We don't actually use the Travis Python, but this keeps it organized.
   - "2.7"
+env:
+  global:
+    - OOMMFTCL=$HOME/miniconda/opt/oommf.tcl
 install:
   # Install conda and add it to PATH
   - wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -14,7 +14,7 @@ install:
   - hash -r
 
   # Apply some conda settings, update conda and print info about the installation (for debugging)
-  - conda config --set always_yes yes --set changeps1 no
+  - conda config --set always_yes yes
   - conda update -q conda
   - conda info -a
 
