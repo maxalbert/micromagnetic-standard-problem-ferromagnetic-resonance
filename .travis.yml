@@ -1,5 +1,8 @@
 sudo: false
 language: python
+env:
+  global:
+    - TCLTKVERSION=8.6
 python:
   # We don't actually use the Travis Python, but this keeps it organized.
   - "2.7"
@@ -20,12 +23,11 @@ install:
   - conda info -a
 
   # Install OOMMF
-  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION oommf tk=8.5
+  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION oommf tk=$TCLTKVERSION
   - source activate test-environment
 
 script:
   - conda list
-  - export TCLTKVERSION=8.6
   - export TCLSH=${CONDA_ROOT}/envs/test-environment/bin/tclsh${TCLTKVERSION}
   - export CONDA_ROOT=$(conda info --root)
   - export OOMMFTCL=${CONDA_ROOT}/envs/test-environment/opt/oommf.tcl
