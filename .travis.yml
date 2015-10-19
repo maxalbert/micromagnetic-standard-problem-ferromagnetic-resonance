@@ -23,7 +23,7 @@ install:
   - conda info -a
 
   # Install OOMMF
-  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION oommf tk=$TCLTKVERSION
+  - conda create -q -n test-environment -c maxalbert python=$TRAVIS_PYTHON_VERSION numpy tk=$TCLTKVERSION oommf
   - source activate test-environment
 
 script:
