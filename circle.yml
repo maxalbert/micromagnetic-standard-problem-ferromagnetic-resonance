@@ -1,0 +1,31 @@
+machine:
+  environment:
+    MINICONDA_ROOT: $HOME/miniconda
+    OOMMFTCL: $MINICONDA_ROOT/opt/oommf.tcl
+    
+dependencies:
+  # Note, we used to use the naive caching of docker images, but found that
+  # it was quicker just to pull each time. #rollondockercaching
+  override:
+    # Install conda and add it to PATH
+    - wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
+    - bash miniconda.sh -b -p $MINICONDA_ROOT
+    - export PATH="$MINICONDA_ROOT/bin:$PATH"
+    - hash -r
+
+    # Apply some conda settings, update conda and print info about the installation (for debugging)
+    - conda config --set always_yes yes
+    - conda update -q conda
+    - conda info -a
+
+    # Install numpy and OOMMF
+    - conda install -c http://conda.anaconda.org/maxalbert numpy oommf
+
+test:
+  override:
+    - cat $(which oommf)
+    - echo $PATH
+    #- $MINICONDA_ROOT/bin/tclsh8.5 ${OOMMFTCL} +version
+    - tclsh ${OOMMFTCL} +version
+    - oommf +version
+    - echo "First successful test with CircleCI"
