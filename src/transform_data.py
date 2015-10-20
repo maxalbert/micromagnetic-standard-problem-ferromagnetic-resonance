@@ -39,8 +39,8 @@ def transform_data():
         targetB = 'm{}s_ft_phase.npy'.format(direction)
 
         if not os.path.isfile(source):
-            raise IOError(("Source file {} does not exist try running the "
-                          "Makefile").format(source))
+            raise IOError("Source file {} does not exist in the current "
+                " directory. Try running the Makefile".format(source))
         if not os.path.isfile(targetA) or not os.path.isfile(targetB):
             spatial_fft(source)
 
