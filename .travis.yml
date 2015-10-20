@@ -29,5 +29,5 @@ script:
   - tclsh ${OOMMFTCL} +version
   #- tclsh8.5 ${OOMMFTCL} +version
   - make -C src/oommf_scripts data
-  - head -n 20 data-generated/dynamic_txyz.txt
+  - head -n 20 data-generated-oommf/dynamic_txyz.txt
   - echo "Test build succeeded."
