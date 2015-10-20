@@ -1,4 +1,7 @@
+#!/usr/bin/env python
+
 import numpy as np
+import os
 
 
 def fft(mx, dt=5e-12):
