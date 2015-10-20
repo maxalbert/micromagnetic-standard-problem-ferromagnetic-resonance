@@ -10,7 +10,7 @@ figures: ${transform_data}
 	python ../postprocessing.py --figures --software OOMMF
 
 ${transform_data}:
-	python ../postprocessing.py --transform --software OOMMF
+	python ../transform_data.py --software OOMMF
 
 data:
 	./generate_data.sh
