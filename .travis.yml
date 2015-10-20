@@ -5,12 +5,13 @@ python:
   - "2.7"
 env:
   global:
-    - OOMMFTCL=$HOME/miniconda/opt/oommf.tcl
+    - MINICONDA_ROOT=$HOME/miniconda
+    - OOMMFTCL=$MINICONDA_ROOT/opt/oommf.tcl
 install:
   # Install conda and add it to PATH
   - wget https://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh;
-  - bash miniconda.sh -b -p $HOME/miniconda
-  - export PATH="$HOME/miniconda/bin:$PATH"
+  - bash miniconda.sh -b -p $MINICONDA_ROOT
+  - export PATH="$MINICONDA_ROOT/bin:$PATH"
   - hash -r
 
   # Apply some conda settings, update conda and print info about the installation (for debugging)
@@ -24,7 +25,8 @@ install:
 script:
   - cat $(which oommf)
   - echo $PATH
-  - $HOME/miniconda/bin/tclsh8.5 ${OOMMFTCL} +version
+  #- $MINICONDA_ROOT/bin/tclsh8.5 ${OOMMFTCL} +version
+  - tclsh ${OOMMFTCL} +version
   #- tclsh8.5 ${OOMMFTCL} +version
   - make -C src/oommf_scripts data
   - head -n 20 data-generated/dynamic_txyz.txt
