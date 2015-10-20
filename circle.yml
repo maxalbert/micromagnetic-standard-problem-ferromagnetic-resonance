@@ -3,6 +3,10 @@ machine:
     MINICONDA_ROOT: $HOME/miniconda
     OOMMFTCL: $MINICONDA_ROOT/opt/oommf.tcl
     PATH: $MINICONDA_ROOT/bin:$PATH
+
+general:
+  artifacts:
+    - "data-generated-oommf/"
     
 dependencies:
   # Note, we used to use the naive caching of docker images, but found that
@@ -28,4 +32,8 @@ test:
     #- $MINICONDA_ROOT/bin/tclsh8.5 ${OOMMFTCL} +version
     - tclsh ${OOMMFTCL} +version
     - oommf +version
-    - echo "First successful test with CircleCI"
+    - make -C src/oommf_scripts data
+    - head -n 20 data-generated-oommf/dynamic_txyz.txt
+    - mkdir $CIRCLE_ARTIFACTS/my-generated-data
+    - cp data-generated-oommf/dynamic_txyz.txt $CIRCLE_ARTIFACTS/my-generated-data
+    - echo "Test build succeeded."
