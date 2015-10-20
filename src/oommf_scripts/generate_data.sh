@@ -8,8 +8,8 @@ set -o errexit
 # Define relevant variables
 OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
 TIMESTAMP_PRETTY=$(date)
-TIMESTAMP=$(date +%Y%m%d%H%M%S --date="$TIMESTAMP_PRETTY")
-OUTPUT_DIR=../../data-generated-oommf-$TIMESTAMP
+#TIMESTAMP=$(date +%Y%m%d%H%M%S --date="$TIMESTAMP_PRETTY")
+OUTPUT_DIR=../../data-generated-oommf
 
 # Create output directory if it does not exist yet
 mkdir -p $OUTPUT_DIR
