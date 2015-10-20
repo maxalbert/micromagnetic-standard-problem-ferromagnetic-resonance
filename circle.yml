@@ -34,6 +34,4 @@ test:
     - oommf +version
     - make -C src/oommf_scripts data
     - head -n 20 data-generated-oommf/dynamic_txyz.txt
-    - mkdir $CIRCLE_ARTIFACTS/my-generated-data
-    - cp data-generated-oommf/dynamic_txyz.txt $CIRCLE_ARTIFACTS/my-generated-data
     - echo "Test build succeeded."
