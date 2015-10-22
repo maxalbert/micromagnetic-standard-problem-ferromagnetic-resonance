@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/maxalbert/micromagnetic-standard-problem-ferromagnetic-resonance.svg?branch=master)](https://travis-ci.org/maxalbert/micromagnetic-standard-problem-ferromagnetic-resonance)
+[![CircleCI Build Status](https://circleci.com/gh/maxalbert/micromagnetic-standard-problem-ferromagnetic-resonance.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/maxalbert/micromagnetic-standard-problem-ferromagnetic-resonance)
 
 # Proposal of a micromagnetic standard problem for ferromagnetic resonance simulations
 
