@@ -28,22 +28,20 @@ def figure2(txyzFileLoc, software):
     ft_power = ft_abs ** 2
     length = len(freq) / 2
 
-    fig = plt.figure(figsize=(8, 6))
-    ax = fig.add_subplot(2, 1, 1)
-    ax.plot(ts * 1e9, my, label='Real')
-    ax.set_xlabel('Time (ns)')
-    ax.set_ylabel('Magnetisation in Y')
-    ax.set_xlim([0, 2.5])
+    fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
+    ax1.plot(ts * 1e9, my, label='Real')
+    ax1.set_xlabel('Time (ns)')
+    ax1.set_ylabel('Magnetisation in Y')
+    ax1.set_xlim([0, 2.5])
 
-    ax = fig.add_subplot(2, 1, 2)
-    ax.plot(freq[0:length] * 1e-9, ft_power[0:length], '-', label='Real')
-    ax.set_xlabel('Frequency (GHz)')
-    ax.set_ylabel('Spectral density')
-    ax.set_xlim([0.1, 20])
-    ax.set_ylim([1e-5, 1e-0])
-    ax.set_yscale('log')
+    ax2.plot(freq[0:length] * 1e-9, ft_power[0:length], '-', label='Real')
+    ax2.set_xlabel('Frequency (GHz)')
+    ax2.set_ylabel('Spectral density')
+    ax2.set_xlim([0.1, 20])
+    ax2.set_ylim([1e-5, 1e-0])
+    ax2.set_yscale('log')
 
-    plt.tight_layout()
+    fig.tight_layout()
     fig.savefig('figure2_{}.pdf'.format(software))
 
 
