@@ -23,6 +23,7 @@ done
 
 # Change into the output directory and run all subsequent commands there.
 pushd $OUTPUT_DIR
+echo "Working in output directory '$OUTPUT_DIR'"
 
 # Generate a README.txt file to inform the user how the data in this
 # directory was created.
