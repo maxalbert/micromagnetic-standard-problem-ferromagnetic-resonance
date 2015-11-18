@@ -10,6 +10,8 @@ matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 
+from transform_data import fft
+
 
 def figure2(txyzFileLoc, software):
     data = np.loadtxt(txyzFileLoc)
