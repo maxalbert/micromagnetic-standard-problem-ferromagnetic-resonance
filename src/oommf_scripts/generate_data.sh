@@ -5,11 +5,13 @@
 set -o nounset
 set -o errexit
 
-# Define relevant variables
+# Define relevant variables; the variable OUTPUT_DIR uses the
+# default value '../../data-generated-oommf' but can be set
+# by the user before running the script, in which case it will
+# use the user-defined value.
 OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
-TIMESTAMP_PRETTY=$(date)
-#TIMESTAMP=$(date +%Y%m%d%H%M%S --date="$TIMESTAMP_PRETTY")
-OUTPUT_DIR=../../data-generated-oommf
+OUTPUT_DIR=${OUTPUT_DIR:-../../data-generated-oommf}
+TIMESTAMP=$(date)
 
 # Create output directory if it does not exist yet
 mkdir -p $OUTPUT_DIR
@@ -24,7 +26,7 @@ pushd $OUTPUT_DIR
 
 # Generate a README.txt file to inform the user how the data in this
 # directory was created.
-echo "The data in this directory was automatically generated on $TIMESTAMP_PRETTY
+echo "The data in this directory was automatically generated on $TIMESTAMP
 by the script 'src/oommf_scripts/generate_data_oommf.sh' in this repository.
 It can safely be deleted if it is no longer needed." > README.txt
 
