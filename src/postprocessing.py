@@ -44,7 +44,8 @@ def figure2(txyzFileLoc, software):
     ax2.set_yscale('log')
 
     fig.tight_layout()
-    fig.savefig('figure2_{}.pdf'.format(software))
+    #fig.savefig('figure2_{}.pdf'.format(software))
+    fig.savefig('figure2_{}.png'.format(software))
 
 
 def figure3(txyzFileLoc, mys_ft_absLoc, software):
