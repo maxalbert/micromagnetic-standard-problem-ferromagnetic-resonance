@@ -44,8 +44,7 @@ def make_figure2(txyzFileLoc, software):
     ax2.set_yscale('log')
 
     fig.tight_layout()
-    #fig.savefig('figure2_{}.pdf'.format(software))
-    fig.savefig('figure2_{}.png'.format(software))
+    return fig
 
 
 def make_figure3(txyzFileLoc, mys_ft_absLoc, software):
@@ -77,7 +76,7 @@ def make_figure3(txyzFileLoc, mys_ft_absLoc, software):
     ax.set_yscale('log')
     ax.legend(frameon=False)
 
-    fig.savefig('figure3_{}.pdf'.format(software))
+    return fig
 
 
 def make_figure4_and_5(txyzFileLoc,
@@ -161,6 +160,8 @@ def make_figure4_and_5(txyzFileLoc,
     mx_phase = np.load(mxs_ft_phaseLoc)
     my_phase = np.load(mys_ft_phaseLoc)
     mz_phase = np.load(mzs_ft_phaseLoc)
+
+    res_figs = []
 
     for peak, fignum in zip(peaks, ['4', '5']):
         figname = "figure{}_{}.pdf".format(fignum, software)
@@ -260,8 +261,9 @@ def make_figure4_and_5(txyzFileLoc,
         fig.subplots_adjust(left=0.1, bottom=0.1, right=0.95, wspace=0.1)
         fig.suptitle('%s GHz' % peakGHz, fontsize=20)
         fig.tight_layout()
-        fig.savefig(figname)
+        res_figs.append(fig)
 
+    return res_figs
 
 
 if __name__ == '__main__':
