@@ -11,16 +11,19 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 from transform_data import fft
+from data_reader import DataReader
 
 
-def make_figure2(txyzFileLoc, software):
-    data = np.loadtxt(txyzFileLoc)
+def make_figure2(data_reader):
+    """
+    Create Fig. 2 in the paper.
 
-    print(data)
-    print(data.shape)
-
-    ts = data[:, 0]
-    my = data[:, 2]
+    Returns a matplotlib figure with two subfigures showing (a) the ringdown
+    dynamics of the spatially averaged y-component of the magnetisation, m_y,
+    and (b) the power spectrum obtained from a Fourier transform of m_y.
+    """
+    ts = data_reader.get_timesteps()
+    my = data_reader.get_average_magnetisation('y')
 
     dt = ts[1] - ts[0]
 
@@ -278,8 +281,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
     software = args.software
 
+    data_reader = DataReader(data_dir='../../data/oommf/', software='OOMMF')
+
     if args.figures:
-        figure2("./dynamic_txyz.txt", software)
+        figure2(data_reader)
 
         figure3("./dynamic_txyz.txt", "mys_ft_abs.npy", software)
 
