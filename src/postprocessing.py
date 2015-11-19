@@ -101,6 +101,7 @@ def figure4_and_5(txyzFileLoc,
         raise Exception("Failed to find the index of given frequency!")
 
     def rescale_cmap(cmap_name, low=0.0, high=1.0, plot=False):
+        import matplotlib._cm as _cm
         '''
         Example 1:
         # equivalent scaling to cplot_like(blah, l_bias=0.33, int_exponent=0.0)
