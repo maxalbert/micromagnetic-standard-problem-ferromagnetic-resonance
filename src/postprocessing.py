@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from transform_data import fft
 
 
-def figure2(txyzFileLoc, software):
+def make_figure2(txyzFileLoc, software):
     data = np.loadtxt(txyzFileLoc)
 
     print(data)
@@ -48,7 +48,7 @@ def figure2(txyzFileLoc, software):
     fig.savefig('figure2_{}.png'.format(software))
 
 
-def figure3(txyzFileLoc, mys_ft_absLoc, software):
+def make_figure3(txyzFileLoc, mys_ft_absLoc, software):
     data = np.loadtxt(txyzFileLoc)
 
     ts = data[:, 0]
@@ -80,10 +80,10 @@ def figure3(txyzFileLoc, mys_ft_absLoc, software):
     fig.savefig('figure3_{}.pdf'.format(software))
 
 
-def figure4_and_5(txyzFileLoc,
-                  mxs_ft_absLoc, mys_ft_absLoc, mzs_ft_absLoc,
-                  mxs_ft_phaseLoc, mys_ft_phaseLoc, mzs_ft_phaseLoc,
-                  software):
+def make_figure4_and_5(txyzFileLoc,
+                       mxs_ft_absLoc, mys_ft_absLoc, mzs_ft_absLoc,
+                       mxs_ft_phaseLoc, mys_ft_phaseLoc, mzs_ft_phaseLoc,
+                       software):
 
     import matplotlib.gridspec as gridspec
     import matplotlib as mpl
