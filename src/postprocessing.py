@@ -49,13 +49,10 @@ def make_figure2(data_reader):
     return fig
 
 
-def make_figure3(txyzFileLoc, mys_ft_absLoc, software):
-    data = np.loadtxt(txyzFileLoc)
-
-    ts = data[:, 0]
-    my = data[:, 2]
-
-    dt = ts[1] - ts[0]
+def make_figure3(data_reader, mys_ft_absLoc):
+    ts = data_reader.get_timesteps()
+    dt = data_reader.get_dt()
+    my = data_reader.get_average_magnetisation('y')
 
     freq, ft_abs, phase = fft(my, dt)
     ft_power = ft_abs ** 2
@@ -283,9 +280,8 @@ if __name__ == '__main__':
     data_reader = DataReader(data_dir='../../data/oommf/', software='OOMMF')
 
     if args.figures:
-        figure2(data_reader)
-
-        figure3("./dynamic_txyz.txt", "mys_ft_abs.npy", software)
+        make_figure2(data_reader)
+        make_figure3(data_reader, "mys_ft_abs.npy")
 
         figure4_and_5("./dynamic_txyz.txt",
                       "mxs_ft_abs.npy", "mys_ft_abs.npy", "mzs_ft_abs.npy",
