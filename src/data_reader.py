@@ -2,7 +2,7 @@ import numpy as np
 import os
 
 
-class DataLoader(object):
+class DataReader(object):
     """
     This class facilitates loading of raw data (as produced
     by OOMMF or Nmag) in a unified way, suitable for further
