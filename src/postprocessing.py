@@ -57,17 +57,18 @@ def make_figure3(data_reader, mys_ft_absLoc):
     freq, ft_abs, phase = fft(my, dt)
     ft_power = ft_abs ** 2
 
-    length = len(freq) / 2
-
     mys = np.load(mys_ft_absLoc)
     averaged = np.average(mys ** 2, axis=0)
 
+    length = len(freq) / 2
+    freqs = freq[0:length] * 1e-9
+    ft_power = ft_power[0:length]
+    averaged = averaged[0:length]
+
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(freq[0:length] * 1e-9, ft_power[0:length],
-            label='Spatially Averaged')
-    ax.plot(freq[0:length] * 1e-9, averaged[0:length], color="g", lw=2,
-            label='Spatially Resolved')
+    ax.plot(freqs, ft_power, label='Spatially Averaged')
+    ax.plot(freqs, averaged, color="g", lw=2, label='Spatially Resolved')
     ax.set_xlabel('Frequency (GHz)')
     ax.set_ylabel('Spectral density')
     ax.set_xlim([0.2, 20])
