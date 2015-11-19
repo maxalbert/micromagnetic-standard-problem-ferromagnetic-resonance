@@ -34,7 +34,7 @@ def make_figure2(data_reader):
     length = len(freq) / 2
 
     fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
-    ax1.plot(ts * 1e9, my, label='Real')
+    ax1.plot(ts * 1e9, my)
     ax1.set_xlabel('Time (ns)')
     ax1.set_ylabel('Magnetisation in Y')
     ax1.set_xlim([0, 2.5])
