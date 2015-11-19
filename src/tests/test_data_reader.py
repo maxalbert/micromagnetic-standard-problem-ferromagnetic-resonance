@@ -13,6 +13,10 @@ class TestDataReader(object):
         ts_expected = [0, 5e-12, 1e-11, 1.5e-11, 2e-11, 2.5e-11]
         assert np.allclose(ts, ts_expected)
 
+    def test_get_dt(self):
+        dt = self.data_reader.get_dt()
+        assert dt == 5e-12
+
     def test_get_average_magnetisation(self):
         mys = self.data_reader.get_average_magnetisation(component='y')
         mzs = self.data_reader.get_average_magnetisation(component='z')

@@ -24,6 +24,17 @@ class DataReader(object):
         # Timestamps are contained in the first column of the averaged data
         return self.data_avg[:, 0]
 
+    def get_dt(self):
+        """
+        Return the size of the timestep used during the simulation.
+        This is determined as the difference between the first and
+        second timestep of the simulation run (all subsequent
+        timesteps are ignored). In particular, it assumes that all
+        timesteps used in the simulation are equal.
+        """
+        ts = self.get_timesteps()
+        return ts[1] - ts[0]
+
     @staticmethod
     def _get_index_of_m_avg_component(component):
         """
