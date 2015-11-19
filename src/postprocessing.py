@@ -23,9 +23,8 @@ def make_figure2(data_reader):
     and (b) the power spectrum obtained from a Fourier transform of m_y.
     """
     ts = data_reader.get_timesteps()
+    dt = data_reader.get_dt()
     my = data_reader.get_average_magnetisation('y')
-
-    dt = ts[1] - ts[0]
 
     freq, ft_abs, phase = fft(my, dt)
 
