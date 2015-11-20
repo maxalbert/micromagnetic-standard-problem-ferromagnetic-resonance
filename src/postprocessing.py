@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from transform_data import fft      # TODO: remove!
 from transform_data import fft_new  # TODO: remove!
 from transform_data import fft_real
+from transform_data import get_spectrum_via_method_2
 from data_reader import DataReader
 
 
@@ -63,8 +64,8 @@ def make_figure3(data_reader, mys_ft_absLoc):
     averaged = np.average(mys ** 2, axis=0)
 
     length = len(freq) / 2
-    freqs = freq[0:length] * 1e-9
-    ft_power = ft_power[0:length]
+    #freqs = freq[0:length] * 1e-9
+    #ft_power = ft_power[0:length]
     averaged = averaged[0:length]
 
     freqs2, ft_power2, _ = fft_new(my, dt)
@@ -76,9 +77,16 @@ def make_figure3(data_reader, mys_ft_absLoc):
     #averaged = fft_computer.get_spectral_density(spatially_resolved=False)
     #ft_power = fft_computer.get_spectral_density(spatially_resolved=True)
 
+
+    #m_y_avg = data_reader.get_average_magnetisation('y')
+    dt = data_reader.get_dt()
+    m_y_full = np.load('../../data/oommf/mys.npy')
+    freqs3, psd_averaged3 = get_spectrum_via_method_2(m_y_full, dt)
+    assert np.allclose(freqs3, freqs2)
+    assert np.allclose(psd_averaged3, averaged)
+
+
     rfreqs, rft_power, _ = fft_real(my, dt)
-    assert np.allclose(rfreqs, freqs)
-    assert np.allclose(rft_power, ft_power)
     assert np.allclose(rfreqs, freqs2)
     assert np.allclose(rft_power, ft_power2)
 
