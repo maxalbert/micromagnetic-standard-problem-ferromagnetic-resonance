@@ -16,13 +16,23 @@ class DataReader(object):
         data_avg_filename = os.path.join(self.data_dir, 'dynamic_txyz.txt')
         self.data_avg = np.loadtxt(data_avg_filename)
 
-    def get_timesteps(self):
+    def get_timesteps(self, unit='s'):
         """
         Return a 1D numpy array containing the timesteps at which
-        which the magnetisation was saved during the simulation.
+        the magnetisation was saved during the simulation.
+
+        The argument `unit` can either be 's' (= seconds) or 'ns'
+        (= nanoseconds).
         """
         # Timestamps are contained in the first column of the averaged data
-        return self.data_avg[:, 0]
+        try:
+            factor = {'s': 1.0, 'ns': 1e9}[unit]
+        except KeyError:
+            msg = ("The argument `unit` must be either 's' (= seconds) "
+                   "or 'ns' (= nanoseconds). Got: '{}'".format(unit))
+            raise ValueError(msg)
+
+        return self.data_avg[:, 0] * factor
 
     def get_dt(self):
         """

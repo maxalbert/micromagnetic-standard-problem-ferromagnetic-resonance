@@ -27,12 +27,12 @@ def make_figure2(data_reader):
     dynamics of the spatially averaged y-component of the magnetisation, m_y,
     and (b) the power spectrum obtained from a Fourier transform of m_y.
     """
-    ts = data_reader.get_timesteps()
+    ts = data_reader.get_timesteps(unit='ns')
     dt = data_reader.get_dt()
     my = data_reader.get_average_magnetisation('y')
 
     fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
-    ax1.plot(ts * 1e9, my)
+    ax1.plot(ts, my)
     ax1.set_xlabel('Time (ns)')
     ax1.set_ylabel('Magnetisation in Y')
     ax1.set_xlim([0, 2.5])
@@ -136,7 +136,7 @@ def make_figure4_and_5(data_reader, software):
         raise ValueError(
             "You must specify the software used to generate the data")
 
-    ts = data_reader.get_timesteps()
+    ts = data_reader.get_timesteps(unit='ns')
     dt = data_reader.get_dt()
     n = len(ts)
 

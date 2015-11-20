@@ -11,7 +11,11 @@ class TestDataReader(object):
     def test_get_timesteps(self):
         ts = self.data_reader.get_timesteps()
         ts_expected = [0, 5e-12, 1e-11, 1.5e-11, 2e-11, 2.5e-11]
+
+        ts_ns = self.data_reader.get_timesteps(unit='ns')
+        ts_ns_expected = [0, 0.005, 0.01, 0.015, 0.02, 0.025]
         assert np.allclose(ts, ts_expected)
+        assert np.allclose(ts_ns, ts_ns_expected)
 
     def test_get_dt(self):
         dt = self.data_reader.get_dt()
