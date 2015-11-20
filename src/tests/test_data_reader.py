@@ -23,7 +23,9 @@ class TestDataReader(object):
 
     def test_get_dt(self):
         dt = self.data_reader.get_dt()
+        dt_ns = self.data_reader.get_dt(unit='ns')
         assert dt == 5e-12
+        assert dt_ns == 0.005
 
     def test_get_average_magnetisation(self):
         mys = self.data_reader.get_average_magnetisation(component='y')

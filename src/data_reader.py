@@ -16,6 +16,17 @@ class DataReader(object):
         data_avg_filename = os.path.join(self.data_dir, 'dynamic_txyz.txt')
         self.data_avg = np.loadtxt(data_avg_filename)
 
+    @staticmethod
+    def _convert_to_unit(val, unit):
+        if unit == 's':
+            return val
+        elif unit == 'ns':
+            return val * 1e9
+        else:
+            msg = ("The argument `unit` must be either 's' (= seconds) "
+                   "or 'ns' (= nanoseconds). Got: '{}'".format(unit))
+            raise ValueError(msg)
+
     def get_timesteps(self, unit='s'):
         """
         Return a 1D numpy array containing the timesteps at which
@@ -25,19 +36,13 @@ class DataReader(object):
         (= nanoseconds).
         """
         # Timestamps are contained in the first column of the averaged data
-        try:
-            factor = {'s': 1.0, 'ns': 1e9}[unit]
-        except KeyError:
-            msg = ("The argument `unit` must be either 's' (= seconds) "
-                   "or 'ns' (= nanoseconds). Got: '{}'".format(unit))
-            raise ValueError(msg)
-
-        return self.data_avg[:, 0] * factor
+        timesteps = self.data_avg[:, 0]
+        return self._convert_to_unit(timesteps, unit)
 
     def get_num_timesteps(self):
         return len(self.get_timesteps())
 
-    def get_dt(self):
+    def get_dt(self, unit='s'):
         """
         Return the size of the timestep used during the simulation.
         This is determined as the difference between the first and
@@ -46,7 +51,8 @@ class DataReader(object):
         timesteps used in the simulation are equal.
         """
         ts = self.get_timesteps()
-        return ts[1] - ts[0]
+        dt = ts[1] - ts[0]
+        return self._convert_to_unit(dt, unit)
 
     @staticmethod
     def _get_index_of_m_avg_component(component):
