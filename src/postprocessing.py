@@ -195,13 +195,15 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
             ax.set_xticks([])
             ax.set_yticks([])
 
-        def plot_colorbar(label, cmap, vmin, vmax, num_ticks):
-            ax = fig.add_subplot(gs[3])
+        def plot_colorbar(gs, label, cmap, vmin, vmax, num_ticks, ticklabels=None):
+            ax = fig.add_subplot(gs)
             norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
             ticks = np.linspace(vmin, vmax, num_ticks)
-            cb1 = mpl.colorbar.ColorbarBase(
-                      ax, cmap, norm=norm, orientation='vertical', ticks=ticks)
-            cb1.set_label(label)
+            cbar = mpl.colorbar.ColorbarBase(
+                       ax, cmap, norm=norm, orientation='vertical', ticks=ticks)
+            cbar.set_label(label)
+            if ticklabels:
+                cbar.ax.set_yticklabels(ticklabels)
 
         def plot_phases(gs, data, label):
             ax = fig.add_subplot(gs)
@@ -213,20 +215,12 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
         plot_amplitudes(gs[0], amp_x, 'x')
         plot_amplitudes(gs[1], amp_y, 'y')
         plot_amplitudes(gs[2], amp_z, 'z')
-        plot_colorbar('Amplitude', cmap_amplitude, vmin=0, vmax=maxVal, num_ticks=5)
+        plot_colorbar(gs[3], 'Amplitude', cmap_amplitude, vmin=0, vmax=maxVal, num_ticks=5)
 
         plot_phases(gs[4], phase_x, 'x')
         plot_phases(gs[5], phase_y, 'y')
         plot_phases(gs[6], phase_z, 'z')
-
-        plt.subplot(gs[7])
-        ax = plt.gca()
-
-        norm = mpl.colors.Normalize(vmin=-np.pi, vmax=np.pi)
-        cb1 = mpl.colorbar.ColorbarBase(ax, my_hsv, norm=norm,
-                                        orientation='vertical',
-                                        ticks=[-3.14, 0, 3.14])
-        cb1.set_label('Phase')
+        plot_colorbar(gs[7], 'Phase', cmap_phase, vmin=-np.pi, vmax=np.pi, num_ticks=3, ticklabels=['-3.14', '0', '-3.14'])
 
         fig.subplots_adjust(left=0.1, bottom=0.1, right=0.95, wspace=0.1)
         fig.suptitle('%s GHz' % peakGHz, fontsize=20)
