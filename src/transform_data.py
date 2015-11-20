@@ -56,6 +56,13 @@ def get_mode_amplitudes(data_reader, component, idx, shape):
     return amplitudes.reshape(shape)
 
 
+def get_mode_phases(data_reader, component, idx, shape):
+    data = data_reader.get_spatially_resolved_magnetisation(component)
+    ft_data = np.fft.rfft(data, axis=0)
+    amplitudes = np.angle(ft_data[idx, :])
+    return amplitudes.reshape(shape)
+
+
 def get_spectrum_via_method_1(data_avg, dt):
     """ompute power spectrum from spatially averaged magnetisation dynamics.
 

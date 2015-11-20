@@ -14,7 +14,7 @@ from transform_data import fft      # TODO: remove!
 from transform_data import fft_new  # TODO: remove!
 from transform_data import fft_real
 from transform_data import get_spectrum_via_method_1, get_spectrum_via_method_2
-from transform_data import get_mode_amplitudes
+from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
 
 
@@ -171,9 +171,9 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
         amp_y = get_mode_amplitudes(data_reader, 'y', index, (nx, ny))
         amp_z = get_mode_amplitudes(data_reader, 'z', index, (nx, ny))
 
-        phase_x = mx_phase[:, index].reshape((ny, nx))
-        phase_y = my_phase[:, index].reshape((ny, nx))
-        phase_z = mz_phase[:, index].reshape((ny, nx))
+        phase_x = get_mode_phases(data_reader, 'x', index, (nx, ny))
+        phase_y = get_mode_phases(data_reader, 'y', index, (nx, ny))
+        phase_z = get_mode_phases(data_reader, 'z', index, (nx, ny))
 
         # Ensure that all three amplitude plots are on the same scale:
         max_X = np.amax(amp_x)
