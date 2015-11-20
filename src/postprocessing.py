@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from transform_data import fft      # TODO: remove!
 from transform_data import fft_new  # TODO: remove!
 from transform_data import fft_real
-from transform_data import get_spectrum_via_method_2
+from transform_data import get_spectrum_via_method_1, get_spectrum_via_method_2
 from data_reader import DataReader
 
 
@@ -80,10 +80,12 @@ def make_figure3(data_reader, mys_ft_absLoc):
 
     #m_y_avg = data_reader.get_average_magnetisation('y')
     dt = data_reader.get_dt()
-    m_y_full = np.load('../../data/oommf/mys.npy')
-    freqs3, psd_averaged3 = get_spectrum_via_method_2(m_y_full, dt)
-    assert np.allclose(freqs3, freqs2)
-    assert np.allclose(psd_averaged3, averaged)
+    m_y_avg = data_reader.get_average_magnetisation('y')
+    m_y_full = data_reader.get_spatially_resolved_magnetisation('y')
+    freqs_new, psd_method1 = get_spectrum_via_method_1(m_y_avg, dt)
+    freqs_new, psd_method2 = get_spectrum_via_method_2(m_y_full, dt)
+    assert np.allclose(freqs_new, freqs2)
+    assert np.allclose(psd_method2, averaged)
 
 
     rfreqs, rft_power, _ = fft_real(my, dt)
@@ -92,8 +94,8 @@ def make_figure3(data_reader, mys_ft_absLoc):
 
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(freqs2, ft_power2, label='Spatially Averaged')
-    ax.plot(freqs2, averaged, color="g", lw=2, label='Spatially Resolved')
+    ax.plot(freqs_new, psd_method1, label='Spatially Averaged')
+    ax.plot(freqs_new, psd_method2, color="g", lw=2, label='Spatially Resolved')
     ax.set_xlabel('Frequency (GHz)')
     ax.set_ylabel('Spectral density')
     ax.set_xlim([0.2, 20])
