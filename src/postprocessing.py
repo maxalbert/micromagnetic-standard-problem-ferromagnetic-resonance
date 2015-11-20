@@ -8,11 +8,12 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 
+import matplotlib as mpl
 import matplotlib.pyplot as plt
+import matplotlib.gridspec as gridspec
+from matplotlib import cm
 
 from transform_data import fft      # TODO: remove!
-from transform_data import fft_new  # TODO: remove!
-from transform_data import fft_real
 from transform_data import get_spectrum_via_method_1, get_spectrum_via_method_2
 from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
@@ -83,11 +84,6 @@ def make_figure3(data_reader):
 
 def make_figure4_and_5(data_reader, software):
 
-    import matplotlib.gridspec as gridspec
-    import matplotlib as mpl
-    import matplotlib.colors as colors
-    from matplotlib import cm
-
     def find_freq_index(f, n, dt):
         freqs = np.fft.fftfreq(n, dt)
 
@@ -123,7 +119,7 @@ def make_figure4_and_5(data_reader, software):
                     'green': tuple(map(tuple, g)),
                     'blue': tuple(map(tuple, b))
                     }
-        my_cmap = colors.LinearSegmentedColormap('my_hsv', _my_data, LUTSIZE)
+        my_cmap = mpl.colors.LinearSegmentedColormap('my_hsv', _my_data, LUTSIZE)
 
         if plot:
             print('plotting')
@@ -177,7 +173,7 @@ def make_figure4_and_5(data_reader, software):
 
         my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
 
-        cmap_amplitude = plt.cm.coolwarm
+        cmap_amplitude = cm.coolwarm
         cmap_phase = my_hsv
 
         def plot_amplitudes(gs, data, label):
