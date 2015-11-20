@@ -21,12 +21,4 @@ def test_reproduce_figure_3():
 @image_comparison(baseline_images=['figure4_OOMMF', 'figure5_OOMMF'], extensions=['png', 'pdf'], tol=TOL)
 def test_reproduce_figure_4_and_5():
     data_reader = DataReader(data_dir="../../data/oommf/", software='OOMMF')
-    make_figure4_and_5(data_reader,
-                       "../../data/oommf/dynamic_txyz.txt",
-                       "../../data/oommf/mxs_ft_abs.npy",
-                       "../../data/oommf/mys_ft_abs.npy",
-                       "../../data/oommf/mzs_ft_abs.npy",
-                       "../../data/oommf/mxs_ft_phase.npy",
-                       "../../data/oommf/mys_ft_phase.npy",
-                       "../../data/oommf/mzs_ft_phase.npy",
-                       software='OOMMF')
+    make_figure4_and_5(data_reader, software='OOMMF')

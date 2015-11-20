@@ -30,7 +30,7 @@ def make_figure2(data_reader):
     dt = data_reader.get_dt()
     my = data_reader.get_average_magnetisation('y')
 
-    freq, ft_abs, phase = fft(my, dt)
+    freq, ft_abs, _ = fft(my, dt)
 
     # We plot the log of the power spectrum, for clarity
     ft_power = ft_abs ** 2
@@ -81,10 +81,7 @@ def make_figure3(data_reader):
     return fig
 
 
-def make_figure4_and_5(data_reader, txyzFileLoc,
-                       mxs_ft_absLoc, mys_ft_absLoc, mzs_ft_absLoc,
-                       mxs_ft_phaseLoc, mys_ft_phaseLoc, mzs_ft_phaseLoc,
-                       software):
+def make_figure4_and_5(data_reader, software):
 
     import matplotlib.gridspec as gridspec
     import matplotlib as mpl
@@ -147,17 +144,12 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
         raise ValueError(
             "You must specify the software used to generate the data")
 
-    data = np.loadtxt(txyzFileLoc)
-    ts = data[:, 0]
+    ts = data_reader.get_timesteps()
+    dt = data_reader.get_dt()
     n = len(ts)
-    dt = ts[1] - ts[0]
 
     nx = 24
     ny = 24
-
-    mx_phase = np.load(mxs_ft_phaseLoc)
-    my_phase = np.load(mys_ft_phaseLoc)
-    mz_phase = np.load(mzs_ft_phaseLoc)
 
     res_figs = []
 
@@ -248,9 +240,4 @@ if __name__ == '__main__':
         make_figure2(data_reader)
         make_figure3(data_reader)
 
-        figure4_and_5(data_reader,
-                      "./dynamic_txyz.txt",
-                      "mxs_ft_abs.npy", "mys_ft_abs.npy", "mzs_ft_abs.npy",
-                      "mxs_ft_phase.npy", "mys_ft_phase.npy",
-                      "mzs_ft_phase.npy",
-                      software)
+        figure4_and_5(data_reader, software)
