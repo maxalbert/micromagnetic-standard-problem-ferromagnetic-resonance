@@ -31,19 +31,15 @@ def make_figure2(data_reader):
     dt = data_reader.get_dt()
     my = data_reader.get_average_magnetisation('y')
 
-    freq, ft_abs, _ = fft(my, dt)
-
-    # We plot the log of the power spectrum, for clarity
-    ft_power = ft_abs ** 2
-    length = len(freq) / 2
-
     fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
     ax1.plot(ts * 1e9, my)
     ax1.set_xlabel('Time (ns)')
     ax1.set_ylabel('Magnetisation in Y')
     ax1.set_xlim([0, 2.5])
 
-    ax2.plot(freq[0:length] * 1e-9, ft_power[0:length], '-', label='Real')
+    freqs, psd1 = get_spectrum_via_method_1(my, dt)
+
+    ax2.plot(freqs, psd1, '-', label='Real')
     ax2.set_xlabel('Frequency (GHz)')
     ax2.set_ylabel('Spectral density')
     ax2.set_xlim([0.1, 20])
