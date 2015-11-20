@@ -183,8 +183,10 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
         gs = gridspec.GridSpec(2, 4, width_ratios=[4, 4, 4, 0.5],
                                height_ratios=[4, 4])
 
+        my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
+
         cmap_amplitude = plt.cm.coolwarm
-        #cmap_phase = my_hsv
+        cmap_phase = my_hsv
 
         def plot_amplitudes(gs, data, label):
             ax = fig.add_subplot(gs)
@@ -193,44 +195,29 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
             ax.set_xticks([])
             ax.set_yticks([])
 
-        def plot_colorbar(label, cmap):
+        def plot_colorbar(label, cmap, vmin_colorbar, vmin, vmax, num_ticks):
             ax = fig.add_subplot(gs[3])
-            norm = mpl.colors.Normalize(vmin=minVal, vmax=maxVal)
+            norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
+            ticks = np.linspace(vmin_colorbar, vmax, num_ticks)
             cb1 = mpl.colorbar.ColorbarBase(
-                      ax, cmap, norm=norm, orientation='vertical',
-                      ticks=[0, maxVal * 0.25, maxVal * 0.5, maxVal * 0.75, maxVal])
+                      ax, cmap, norm=norm, orientation='vertical', ticks=ticks)
             cb1.set_label(label)
+
+        def plot_phases(gs, data, label):
+            ax = fig.add_subplot(gs)
+            ax.imshow(data, cmap=cmap_phase, vmin=-np.pi, vmax=np.pi, origin='lower')
+            ax.set_title(label)
+            ax.set_xticks([])
+            ax.set_yticks([])
 
         plot_amplitudes(gs[0], amp_x, 'x')
         plot_amplitudes(gs[1], amp_y, 'y')
         plot_amplitudes(gs[2], amp_z, 'z')
-        plot_colorbar('Amplitude', cmap_amplitude)
+        plot_colorbar('Amplitude', cmap_amplitude, vmin_colorbar=0, vmin=minVal, vmax=maxVal, num_ticks=5)
 
-
-        my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
-
-        plt.subplot(gs[4])
-        ax = plt.gca()
-        plt.imshow(phase_x, cmap=my_hsv, vmin=-np.pi, vmax=np.pi,
-                   origin='lower')
-        plt.title('x')
-        plt.xticks([])
-        plt.yticks([])
-
-        plt.subplot(gs[5])
-        ax = plt.gca()
-        plt.imshow(phase_y, cmap=my_hsv, vmin=-np.pi, vmax=np.pi,
-                   origin='lower')
-        plt.title('y')
-        plt.xticks([])
-        plt.yticks([])
-
-        plt.subplot(gs[6])
-        ax = plt.gca()
-        plt.imshow(phase_z, cmap=my_hsv, vmin=-np.pi, vmax=np.pi, origin='lower')
-        plt.xticks([])
-        plt.yticks([])
-        plt.title('z')
+        plot_phases(gs[4], phase_x, 'x')
+        plot_phases(gs[5], phase_y, 'y')
+        plot_phases(gs[6], phase_z, 'z')
 
         plt.subplot(gs[7])
         ax = plt.gca()
