@@ -14,6 +14,7 @@ from transform_data import fft      # TODO: remove!
 from transform_data import fft_new  # TODO: remove!
 from transform_data import fft_real
 from transform_data import get_spectrum_via_method_1, get_spectrum_via_method_2
+from transform_data import get_mode_amplitudes
 from data_reader import DataReader
 
 
@@ -80,7 +81,7 @@ def make_figure3(data_reader):
     return fig
 
 
-def make_figure4_and_5(txyzFileLoc,
+def make_figure4_and_5(data_reader, txyzFileLoc,
                        mxs_ft_absLoc, mys_ft_absLoc, mzs_ft_absLoc,
                        mxs_ft_phaseLoc, mys_ft_phaseLoc, mzs_ft_phaseLoc,
                        software):
@@ -154,10 +155,6 @@ def make_figure4_and_5(txyzFileLoc,
     nx = 24
     ny = 24
 
-    mx_abs = np.load(mxs_ft_absLoc)
-    my_abs = np.load(mys_ft_absLoc)
-    mz_abs = np.load(mzs_ft_absLoc)
-
     mx_phase = np.load(mxs_ft_phaseLoc)
     my_phase = np.load(mys_ft_phaseLoc)
     mz_phase = np.load(mzs_ft_phaseLoc)
@@ -170,9 +167,9 @@ def make_figure4_and_5(txyzFileLoc,
 
         peakGHz = str(round((peak * 1e-9), 4))
 
-        amp_x = mx_abs[:, index].reshape((ny, nx))
-        amp_y = my_abs[:, index].reshape((ny, nx))
-        amp_z = mz_abs[:, index].reshape((ny, nx))
+        amp_x = get_mode_amplitudes(data_reader, 'x', index, (nx, ny))
+        amp_y = get_mode_amplitudes(data_reader, 'y', index, (nx, ny))
+        amp_z = get_mode_amplitudes(data_reader, 'z', index, (nx, ny))
 
         phase_x = mx_phase[:, index].reshape((ny, nx))
         phase_y = my_phase[:, index].reshape((ny, nx))
@@ -285,7 +282,8 @@ if __name__ == '__main__':
         make_figure2(data_reader)
         make_figure3(data_reader)
 
-        figure4_and_5("./dynamic_txyz.txt",
+        figure4_and_5(data_reader,
+                      "./dynamic_txyz.txt",
                       "mxs_ft_abs.npy", "mys_ft_abs.npy", "mzs_ft_abs.npy",
                       "mxs_ft_phase.npy", "mys_ft_phase.npy",
                       "mzs_ft_phase.npy",
