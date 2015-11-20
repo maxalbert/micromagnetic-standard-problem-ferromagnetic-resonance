@@ -57,3 +57,14 @@ class DataReader(object):
         """
         idx = self._get_index_of_m_avg_component(component)
         return self.data_avg[:, idx]
+
+    def get_spatially_resolved_magnetisation(self, component):
+        """
+        Return a 2D numpy array containing the values of the
+        spatially resolved magnetization sampled at the time-
+        steps during the simulation. The time dimension is
+        along the first axis (i.e., `m[:, j]` is the time
+        series of the magnetisation at the j-th grid point).
+        """
+        filename = os.path.join(self.data_dir, 'm{}s.npy'.format(component))
+        return np.load(filename)

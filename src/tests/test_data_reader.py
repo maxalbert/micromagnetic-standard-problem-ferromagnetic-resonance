@@ -24,5 +24,17 @@ class TestDataReader(object):
         mys_expected = [0, -0.1, -0.2, -0.3, -0.4, -0.5]
         mzs_expected = [1.0, 0.9, 0.8, 0.7, 0.6, 0.5]
 
-        np.allclose(mys, mys_expected)
-        np.allclose(mzs, mzs_expected)
+        assert np.allclose(mys, mys_expected)
+        assert np.allclose(mzs, mzs_expected)
+
+    def test_get_spatially_resolved_magnetisation(self):
+        mys = self.data_reader.get_spatially_resolved_magnetisation(component='y')
+        mzs = self.data_reader.get_spatially_resolved_magnetisation(component='z')
+
+        mys_expected = np.array([[ 0.   , -0.1  , -0.2  , -0.3  , -0.4  , -0.5  ],
+                                 [ 0.372,  0.272,  0.172,  0.072, -0.028, -0.128]]).transpose()
+        mzs_expected = np.array([[ 1.   ,  0.9  ,  0.8  ,  0.7  ,  0.6  ,  0.5  ],
+                                 [ 0.554,  0.454,  0.354,  0.254,  0.154,  0.054]]).transpose()
+
+        assert np.allclose(mys, mys_expected)
+        assert np.allclose(mzs, mzs_expected)
