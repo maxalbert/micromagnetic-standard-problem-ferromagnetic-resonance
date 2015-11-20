@@ -93,7 +93,7 @@ def get_spectrum_via_method_1(data_avg, dt):
     ft_data_avg = np.fft.rfft(data_avg)
     psd_data_avg = np.abs(ft_data_avg)**2
     # FIXME: We ignore the last element for now so that we can compare with the existing data.
-    return freqs[:-1] * 1e-9, psd_data_avg[:-1]
+    return psd_data_avg[:-1]
 
 
 def get_spectrum_via_method_2(data, dt):
@@ -130,7 +130,7 @@ def get_spectrum_via_method_2(data, dt):
     psd_data = np.abs(ft_data)**2
     psd_data_avg = np.average(psd_data, axis=1)
     # FIXME: We ignore the last element for now so that we can compare with the existing data.
-    return freqs[:-1] * 1e-9, psd_data_avg[:-1]
+    return psd_data_avg[:-1]
 
 
 def spatial_fft(dataname):

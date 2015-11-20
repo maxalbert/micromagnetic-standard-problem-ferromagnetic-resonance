@@ -19,6 +19,21 @@ from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
 
 
+def get_fft_frequencies(data_reader, unit='Hz'):
+    if unit == 'Hz':
+        timestep_unit = 's'
+    elif unit == 'GHz':
+        timestep_unit = 'ns'
+    else:
+        raise ValueError("Invalid unit: '{}'. Allowed values: 's', 'ns'")
+
+    n = data_reader.get_num_timesteps()
+    dt = data_reader.get_dt(unit=timestep_unit)
+    freqs = np.fft.rfftfreq(n, dt)
+    # FIXME: We ignore the last element for now so that we can compare with the existing data.
+    return freqs[:-1]
+
+
 def make_figure2(data_reader):
     """
     Create Fig. 2 in the paper.
@@ -37,7 +52,8 @@ def make_figure2(data_reader):
     ax1.set_ylabel('Magnetisation in Y')
     ax1.set_xlim([0, 2.5])
 
-    freqs, psd1 = get_spectrum_via_method_1(my, dt)
+    freqs = get_fft_frequencies(data_reader, unit='GHz')
+    psd1 = get_spectrum_via_method_1(my, dt)
 
     ax2.plot(freqs, psd1, '-', label='Real')
     ax2.set_xlabel('Frequency (GHz)')
@@ -61,8 +77,9 @@ def make_figure3(data_reader):
     dt = data_reader.get_dt()
     my_avg = data_reader.get_average_magnetisation('y')
     my_full = data_reader.get_spatially_resolved_magnetisation('y')
-    freqs, psd1 = get_spectrum_via_method_1(my_avg, dt)
-    freqs, psd2 = get_spectrum_via_method_2(my_full, dt)
+    freqs = get_fft_frequencies(data_reader, unit='GHz')
+    psd1 = get_spectrum_via_method_1(my_avg, dt)
+    psd2 = get_spectrum_via_method_2(my_full, dt)
 
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
