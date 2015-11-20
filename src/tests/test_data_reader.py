@@ -17,6 +17,10 @@ class TestDataReader(object):
         assert np.allclose(ts, ts_expected)
         assert np.allclose(ts_ns, ts_ns_expected)
 
+    def test_get_num_timesteps(self):
+        n = self.data_reader.get_num_timesteps()
+        assert n == 6
+
     def test_get_dt(self):
         dt = self.data_reader.get_dt()
         assert dt == 5e-12

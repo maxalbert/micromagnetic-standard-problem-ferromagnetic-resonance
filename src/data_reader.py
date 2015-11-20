@@ -34,6 +34,9 @@ class DataReader(object):
 
         return self.data_avg[:, 0] * factor
 
+    def get_num_timesteps(self):
+        return len(self.get_timesteps())
+
     def get_dt(self):
         """
         Return the size of the timestep used during the simulation.
