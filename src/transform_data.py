@@ -17,6 +17,21 @@ def fft(mx, dt=5e-12):
     return freq, ft_abs, ft_phase
 
 
+def fft_new(mx, dt=5e-12):
+    """ FFT of the data at dt """
+    n = len(mx)
+    freq = np.fft.fftfreq(n, dt)
+
+    ft_mx = np.fft.fft(mx)
+
+    ft_abs = np.abs(ft_mx)
+    ft_phase = np.angle(ft_mx)
+
+    freqs = freq[:(n//2)] * 1e-9
+    ft_power = ft_abs[:(n//2)]**2
+    return freqs, ft_power, ft_phase[:(n//2)]
+
+
 def spatial_fft(dataname):
     """ Spatially averaged FFT as defined in Eqn. (5) """
     ft_abs = []

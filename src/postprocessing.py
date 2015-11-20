@@ -10,7 +10,8 @@ matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 
-from transform_data import fft
+from transform_data import fft  # TODO: remove!
+from transform_data import fft_new
 from data_reader import DataReader
 
 
@@ -61,14 +62,23 @@ def make_figure3(data_reader, mys_ft_absLoc):
     averaged = np.average(mys ** 2, axis=0)
 
     length = len(freq) / 2
-    freqs = freq[0:length] * 1e-9
-    ft_power = ft_power[0:length]
+    #freqs = freq[0:length] * 1e-9
+    #ft_power = ft_power[0:length]
     averaged = averaged[0:length]
+
+    freqs2, ft_power2, _ = fft_new(my, dt)
+    #assert np.allclose(freqs2, freqs)
+    #assert np.allclose(ft_power2, ft_power)
+
+    #fft_computer = FFTComputer(data_reader)
+    #freqs = fft_computer.get_frequencies()
+    #averaged = fft_computer.get_spectral_density(spatially_resolved=False)
+    #ft_power = fft_computer.get_spectral_density(spatially_resolved=True)
 
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(freqs, ft_power, label='Spatially Averaged')
-    ax.plot(freqs, averaged, color="g", lw=2, label='Spatially Resolved')
+    ax.plot(freqs2, ft_power2, label='Spatially Averaged')
+    ax.plot(freqs2, averaged, color="g", lw=2, label='Spatially Resolved')
     ax.set_xlabel('Frequency (GHz)')
     ax.set_ylabel('Spectral density')
     ax.set_xlim([0.2, 20])
