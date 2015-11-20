@@ -52,50 +52,17 @@ def make_figure2(data_reader):
     return fig
 
 
-def make_figure3(data_reader, mys_ft_absLoc):
-    ts = data_reader.get_timesteps()
+def make_figure3(data_reader):
     dt = data_reader.get_dt()
-    my = data_reader.get_average_magnetisation('y')
-
-    freq, ft_abs, phase = fft(my, dt)
-    ft_power = ft_abs ** 2
-
-    mys = np.load(mys_ft_absLoc)
-    averaged = np.average(mys ** 2, axis=0)
-
-    length = len(freq) / 2
-    #freqs = freq[0:length] * 1e-9
-    #ft_power = ft_power[0:length]
-    averaged = averaged[0:length]
-
-    freqs2, ft_power2, _ = fft_new(my, dt)
-    #assert np.allclose(freqs2, freqs)
-    #assert np.allclose(ft_power2, ft_power)
-
-    #fft_computer = FFTComputer(data_reader)
-    #freqs = fft_computer.get_frequencies()
-    #averaged = fft_computer.get_spectral_density(spatially_resolved=False)
-    #ft_power = fft_computer.get_spectral_density(spatially_resolved=True)
-
-
-    #m_y_avg = data_reader.get_average_magnetisation('y')
-    dt = data_reader.get_dt()
-    m_y_avg = data_reader.get_average_magnetisation('y')
-    m_y_full = data_reader.get_spatially_resolved_magnetisation('y')
-    freqs_new, psd_method1 = get_spectrum_via_method_1(m_y_avg, dt)
-    freqs_new, psd_method2 = get_spectrum_via_method_2(m_y_full, dt)
-    assert np.allclose(freqs_new, freqs2)
-    assert np.allclose(psd_method2, averaged)
-
-
-    rfreqs, rft_power, _ = fft_real(my, dt)
-    assert np.allclose(rfreqs, freqs2)
-    assert np.allclose(rft_power, ft_power2)
+    my_avg = data_reader.get_average_magnetisation('y')
+    my_full = data_reader.get_spatially_resolved_magnetisation('y')
+    freqs, psd1 = get_spectrum_via_method_1(my_avg, dt)
+    freqs, psd2 = get_spectrum_via_method_2(my_full, dt)
 
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
-    ax.plot(freqs_new, psd_method1, label='Spatially Averaged')
-    ax.plot(freqs_new, psd_method2, color="g", lw=2, label='Spatially Resolved')
+    ax.plot(freqs, psd1, label='Spatially Averaged')
+    ax.plot(freqs, psd2, color='g', lw=2, label='Spatially Resolved')
     ax.set_xlabel('Frequency (GHz)')
     ax.set_ylabel('Spectral density')
     ax.set_xlim([0.2, 20])
@@ -309,7 +276,7 @@ if __name__ == '__main__':
 
     if args.figures:
         make_figure2(data_reader)
-        make_figure3(data_reader, "mys_ft_abs.npy")
+        make_figure3(data_reader)
 
         figure4_and_5("./dynamic_txyz.txt",
                       "mxs_ft_abs.npy", "mys_ft_abs.npy", "mzs_ft_abs.npy",
