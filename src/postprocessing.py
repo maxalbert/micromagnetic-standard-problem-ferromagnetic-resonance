@@ -245,7 +245,7 @@ def make_figure4_and_5(txyzFileLoc,
 
         plt.subplot(gs[6])
         ax = plt.gca()
-        plt.imshow(phase_z, cmap=my_hsv, vmin=-np.pi, vmax=np.pi)
+        plt.imshow(phase_z, cmap=my_hsv, vmin=-np.pi, vmax=np.pi, origin='lower')
         plt.xticks([])
         plt.yticks([])
         plt.title('z')
