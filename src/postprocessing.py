@@ -53,6 +53,13 @@ def make_figure2(data_reader):
 
 
 def make_figure3(data_reader):
+    """
+    Create Fig. 3 in the paper.
+
+    Returns a matplotlib figure with two curves for the power
+    spectral densities of the magnetisation dynamics computed
+    via method 1 and 2 (as described in section C1 and C2).
+    """
     dt = data_reader.get_dt()
     my_avg = data_reader.get_average_magnetisation('y')
     my_full = data_reader.get_spatially_resolved_magnetisation('y')
