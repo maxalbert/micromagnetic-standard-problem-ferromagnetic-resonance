@@ -176,51 +176,36 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
         phase_z = get_mode_phases(data_reader, 'z', index, (nx, ny))
 
         # Ensure that all three amplitude plots are on the same scale:
-        max_X = np.amax(amp_x)
-        max_Y = np.amax(amp_y)
-        max_Z = np.amax(amp_z)
-        maxVal = max([max_X, max_Y, max_Z])
-
-        min_X = np.amin(amp_x)
-        min_Y = np.amin(amp_y)
-        min_Z = np.amin(amp_z)
-        minVal = min([min_X, min_Y, min_Z])
+        minVal = np.min([amp_x, amp_y, amp_z])
+        maxVal = np.max([amp_x, amp_y, amp_z])
 
         fig = plt.figure(figsize=(8, 6))
         gs = gridspec.GridSpec(2, 4, width_ratios=[4, 4, 4, 0.5],
                                height_ratios=[4, 4])
-        plt.subplot(gs[0])
-        ax = plt.gca()
-        plt.imshow(amp_x, cmap=plt.cm.coolwarm, vmin=minVal, vmax=maxVal,
-                   origin='lower')
-        plt.title('x')
-        plt.xticks([])
-        plt.yticks([])
 
-        plt.subplot(gs[1])
-        ax = plt.gca()
-        plt.imshow(amp_y, cmap=plt.cm.coolwarm, vmin=minVal, vmax=maxVal,
-                   origin='lower')
-        plt.title('y')
-        plt.xticks([])
-        plt.yticks([])
+        cmap_amplitude = plt.cm.coolwarm
+        #cmap_phase = my_hsv
 
-        plt.subplot(gs[2])
-        ax = plt.gca()
-        plt.imshow(amp_z, cmap=plt.cm.coolwarm, vmin=minVal, vmax=maxVal,
-                   origin='lower')
-        plt.xticks([])
-        plt.yticks([])
-        plt.title('z')
+        def plot_amplitudes(gs, data, label):
+            ax = fig.add_subplot(gs)
+            ax.imshow(data, cmap=cmap_amplitude, vmin=minVal, vmax=maxVal, origin='lower')
+            ax.set_title(label)
+            ax.set_xticks([])
+            ax.set_yticks([])
 
-        plt.subplot(gs[3])
-        ax = plt.gca()
-        norm = mpl.colors.Normalize(vmin=minVal, vmax=maxVal)
-        cb1 = mpl.colorbar.ColorbarBase(ax, plt.cm.coolwarm, norm=norm,
-                                        orientation='vertical',
-                                        ticks=[0, maxVal * 0.25, maxVal * 0.5,
-                                               maxVal * 0.75, maxVal])
-        cb1.set_label('Amplitude')
+        def plot_colorbar(label, cmap):
+            ax = fig.add_subplot(gs[3])
+            norm = mpl.colors.Normalize(vmin=minVal, vmax=maxVal)
+            cb1 = mpl.colorbar.ColorbarBase(
+                      ax, cmap, norm=norm, orientation='vertical',
+                      ticks=[0, maxVal * 0.25, maxVal * 0.5, maxVal * 0.75, maxVal])
+            cb1.set_label(label)
+
+        plot_amplitudes(gs[0], amp_x, 'x')
+        plot_amplitudes(gs[1], amp_y, 'y')
+        plot_amplitudes(gs[2], amp_z, 'z')
+        plot_colorbar('Amplitude', cmap_amplitude)
+
 
         my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
 
