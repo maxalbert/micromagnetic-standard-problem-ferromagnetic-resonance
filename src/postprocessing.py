@@ -195,10 +195,10 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
             ax.set_xticks([])
             ax.set_yticks([])
 
-        def plot_colorbar(label, cmap, vmin_colorbar, vmin, vmax, num_ticks):
+        def plot_colorbar(label, cmap, vmin, vmax, num_ticks):
             ax = fig.add_subplot(gs[3])
             norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
-            ticks = np.linspace(vmin_colorbar, vmax, num_ticks)
+            ticks = np.linspace(vmin, vmax, num_ticks)
             cb1 = mpl.colorbar.ColorbarBase(
                       ax, cmap, norm=norm, orientation='vertical', ticks=ticks)
             cb1.set_label(label)
@@ -213,7 +213,7 @@ def make_figure4_and_5(data_reader, txyzFileLoc,
         plot_amplitudes(gs[0], amp_x, 'x')
         plot_amplitudes(gs[1], amp_y, 'y')
         plot_amplitudes(gs[2], amp_z, 'z')
-        plot_colorbar('Amplitude', cmap_amplitude, vmin_colorbar=0, vmin=minVal, vmax=maxVal, num_ticks=5)
+        plot_colorbar('Amplitude', cmap_amplitude, vmin=0, vmax=maxVal, num_ticks=5)
 
         plot_phases(gs[4], phase_x, 'x')
         plot_phases(gs[5], phase_y, 'y')
