@@ -32,6 +32,23 @@ def fft_new(mx, dt=5e-12):
     return freqs, ft_power, ft_phase[:(n//2)]
 
 
+def fft_real(mx, dt=5e-12):
+    """ FFT of the data at dt """
+    n = len(mx)
+    rfreq = np.fft.rfftfreq(n, dt)
+
+    rft_mx = np.fft.rfft(mx)
+
+    rft_abs = np.abs(rft_mx)
+    rft_phase = np.angle(rft_mx)
+
+    # Ignore the last element for the time being so that we can
+    # compare with the arrays as they are currently computed.
+    rfreqs = rfreq[:-1] * 1e-9
+    rft_power = rft_abs[:-1]**2
+    return rfreqs, rft_power, rft_phase
+
+
 def spatial_fft(dataname):
     """ Spatially averaged FFT as defined in Eqn. (5) """
     ft_abs = []

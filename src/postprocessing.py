@@ -10,8 +10,9 @@ matplotlib.use('Agg')
 
 import matplotlib.pyplot as plt
 
-from transform_data import fft  # TODO: remove!
-from transform_data import fft_new
+from transform_data import fft      # TODO: remove!
+from transform_data import fft_new  # TODO: remove!
+from transform_data import fft_real
 from data_reader import DataReader
 
 
@@ -62,8 +63,8 @@ def make_figure3(data_reader, mys_ft_absLoc):
     averaged = np.average(mys ** 2, axis=0)
 
     length = len(freq) / 2
-    #freqs = freq[0:length] * 1e-9
-    #ft_power = ft_power[0:length]
+    freqs = freq[0:length] * 1e-9
+    ft_power = ft_power[0:length]
     averaged = averaged[0:length]
 
     freqs2, ft_power2, _ = fft_new(my, dt)
@@ -74,6 +75,12 @@ def make_figure3(data_reader, mys_ft_absLoc):
     #freqs = fft_computer.get_frequencies()
     #averaged = fft_computer.get_spectral_density(spatially_resolved=False)
     #ft_power = fft_computer.get_spectral_density(spatially_resolved=True)
+
+    rfreqs, rft_power, _ = fft_real(my, dt)
+    assert np.allclose(rfreqs, freqs)
+    assert np.allclose(rft_power, ft_power)
+    assert np.allclose(rfreqs, freqs2)
+    assert np.allclose(rft_power, ft_power2)
 
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
