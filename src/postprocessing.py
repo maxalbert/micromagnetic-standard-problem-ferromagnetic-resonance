@@ -164,10 +164,10 @@ def make_figure4_and_5(data_reader, software):
 
     for peak, fignum in zip(peaks, ['4', '5']):
         figname = "figure{}_{}.pdf".format(fignum, software)
-        index = find_freq_index(peak, n, dt)
 
         peakGHz = str(round((peak * 1e-9), 4))
 
+        index = find_freq_index(peak, n, dt)
         amp_x = get_mode_amplitudes(data_reader, 'x', index, (nx, ny))
         amp_y = get_mode_amplitudes(data_reader, 'y', index, (nx, ny))
         amp_z = get_mode_amplitudes(data_reader, 'z', index, (nx, ny))
@@ -186,12 +186,9 @@ def make_figure4_and_5(data_reader, software):
 
         my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
 
-        cmap_amplitude = cm.coolwarm
-        cmap_phase = my_hsv
-
-        def plot_amplitudes(gs, data, label):
+        def plot_mode_component(gs, data, label, vmin, vmax, cmap):
             ax = fig.add_subplot(gs)
-            ax.imshow(data, cmap=cmap_amplitude, vmin=minVal, vmax=maxVal, origin='lower')
+            ax.imshow(data, cmap=cmap, vmin=vmin, vmax=vmax, origin='lower')
             ax.set_title(label)
             ax.set_xticks([])
             ax.set_yticks([])
@@ -206,21 +203,17 @@ def make_figure4_and_5(data_reader, software):
             if ticklabels:
                 cbar.ax.set_yticklabels(ticklabels)
 
-        def plot_phases(gs, data, label):
-            ax = fig.add_subplot(gs)
-            ax.imshow(data, cmap=cmap_phase, vmin=-np.pi, vmax=np.pi, origin='lower')
-            ax.set_title(label)
-            ax.set_xticks([])
-            ax.set_yticks([])
+        cmap_amplitude = cm.coolwarm
+        cmap_phase = my_hsv
 
-        plot_amplitudes(gs[0], amp_x, 'x')
-        plot_amplitudes(gs[1], amp_y, 'y')
-        plot_amplitudes(gs[2], amp_z, 'z')
+        plot_mode_component(gs[0], amp_x, 'x', cmap=cmap_amplitude, vmin=minVal, vmax=maxVal)
+        plot_mode_component(gs[1], amp_y, 'y', cmap=cmap_amplitude, vmin=minVal, vmax=maxVal)
+        plot_mode_component(gs[2], amp_z, 'z', cmap=cmap_amplitude, vmin=minVal, vmax=maxVal)
         plot_colorbar(gs[3], 'Amplitude', cmap_amplitude, vmin=0, vmax=maxVal, num_ticks=5)
 
-        plot_phases(gs[4], phase_x, 'x')
-        plot_phases(gs[5], phase_y, 'y')
-        plot_phases(gs[6], phase_z, 'z')
+        plot_mode_component(gs[4], phase_x, 'x', cmap=cmap_phase, vmin=-np.pi, vmax=+np.pi)
+        plot_mode_component(gs[5], phase_y, 'y', cmap=cmap_phase, vmin=-np.pi, vmax=+np.pi)
+        plot_mode_component(gs[6], phase_z, 'z', cmap=cmap_phase, vmin=-np.pi, vmax=+np.pi)
         plot_colorbar(gs[7], 'Phase', cmap_phase, vmin=-np.pi, vmax=np.pi, num_ticks=3, ticklabels=['-3.14', '0', '-3.14'])
 
         fig.subplots_adjust(left=0.1, bottom=0.1, right=0.95, wspace=0.1)
