@@ -88,7 +88,7 @@ class DataReader(object):
         filename = os.path.join(self.data_dir, 'm{}s.npy'.format(component))
         return np.load(filename)
 
-    def get_fft_frequencies(data_reader, unit='Hz'):
+    def get_fft_frequencies(self, unit='Hz'):
         if unit == 'Hz':
             timestep_unit = 's'
         elif unit == 'GHz':
@@ -96,8 +96,26 @@ class DataReader(object):
         else:
             raise ValueError("Invalid unit: '{}'. Allowed values: 's', 'ns'")
 
-        n = data_reader.get_num_timesteps()
-        dt = data_reader.get_dt(unit=timestep_unit)
+        n = self.get_num_timesteps()
+        dt = self.get_dt(unit=timestep_unit)
         freqs = np.fft.rfftfreq(n, dt)
         # FIXME: We ignore the last element for now so that we can compare with the existing data.
         return freqs[:-1]
+
+    def find_freq_index(self, f, unit='Hz', rtol=1e-5):
+        """
+        Return index `i` such that `data_reader.get_fft_frequencies()[i]` is
+        as close as possible to the given frequency `f`.
+
+        Raises an exception if the relative difference is above the given
+        tolerance `rtol`.
+        """
+        freqs = self.get_fft_frequencies(unit=unit)
+        df = freqs[1] - freqs[0]
+
+        i = np.argmin(np.abs(freqs - f))
+
+        if np.abs(freqs[i] - f) > rtol * df:
+            raise Exception("Failed to find the index of given frequency!")
+
+        return i

@@ -91,16 +91,6 @@ def make_figure3(data_reader):
 
 def make_figure4_and_5(data_reader, software):
 
-    def find_freq_index(f, n, dt):
-        freqs = np.fft.fftfreq(n, dt)
-
-        df = freqs[1] - freqs[0]
-        for i in range(n):
-            if abs(f - freqs[i]) < 1e-5 * df:
-                return i
-
-        raise Exception("Failed to find the index of given frequency!")
-
     def rescale_cmap(cmap_name, low=0.0, high=1.0, plot=False):
         import matplotlib._cm as _cm
         '''
@@ -161,7 +151,7 @@ def make_figure4_and_5(data_reader, software):
 
         peakGHz = str(round((peak * 1e-9), 4))
 
-        index = find_freq_index(peak, n, dt)
+        index = data_reader.find_freq_index(peak, unit='Hz')
         amp_x = get_mode_amplitudes(data_reader, 'x', index, (nx, ny))
         amp_y = get_mode_amplitudes(data_reader, 'y', index, (nx, ny))
         amp_z = get_mode_amplitudes(data_reader, 'z', index, (nx, ny))
