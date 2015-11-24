@@ -34,7 +34,7 @@ def make_figure2(data_reader):
     # Compute power spectrum from averaged magnetisation.
     freqs = data_reader.get_fft_frequencies(unit='GHz')
     dt = data_reader.get_dt()
-    psd1 = get_spectrum_via_method_1(mys, dt)
+    psd = get_spectrum_via_method_1(mys, dt)
 
     # Plot magnetisation dynamics and power spectrum into two subplots.
     fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
@@ -44,7 +44,7 @@ def make_figure2(data_reader):
     ax1.set_ylabel('Magnetisation in Y')
     ax1.set_xlim([0, 2.5])
 
-    ax2.plot(freqs, psd1, '-', label='Real')
+    ax2.plot(freqs, psd, '-', label='Real')
     ax2.set_xlabel('Frequency (GHz)')
     ax2.set_ylabel('Spectral density')
     ax2.set_xlim([0.1, 20])
