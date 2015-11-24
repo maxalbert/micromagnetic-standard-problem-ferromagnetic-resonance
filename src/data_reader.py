@@ -87,3 +87,17 @@ class DataReader(object):
         """
         filename = os.path.join(self.data_dir, 'm{}s.npy'.format(component))
         return np.load(filename)
+
+    def get_fft_frequencies(data_reader, unit='Hz'):
+        if unit == 'Hz':
+            timestep_unit = 's'
+        elif unit == 'GHz':
+            timestep_unit = 'ns'
+        else:
+            raise ValueError("Invalid unit: '{}'. Allowed values: 's', 'ns'")
+
+        n = data_reader.get_num_timesteps()
+        dt = data_reader.get_dt(unit=timestep_unit)
+        freqs = np.fft.rfftfreq(n, dt)
+        # FIXME: We ignore the last element for now so that we can compare with the existing data.
+        return freqs[:-1]
