@@ -64,7 +64,7 @@ def get_mode_phases(data_reader, component, idx, shape):
 
 
 def get_spectrum_via_method_1(data_avg, dt):
-    """ompute power spectrum from spatially averaged magnetisation dynamics.
+    """Compute power spectrum from spatially averaged magnetisation dynamics.
 
     The returned array contains the power spectral densities `S_y(f)` as
     defined in Eq. (1) of the paper.
