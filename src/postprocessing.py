@@ -42,18 +42,22 @@ def make_figure2(data_reader):
     dynamics of the spatially averaged y-component of the magnetisation, m_y,
     and (b) the power spectrum obtained from a Fourier transform of m_y.
     """
+    # Read timesteps and spatially averaged magnetisation (y-component).
     ts = data_reader.get_timesteps(unit='ns')
-    dt = data_reader.get_dt()
-    my = data_reader.get_average_magnetisation('y')
+    mys = data_reader.get_average_magnetisation('y')
 
+    # Compute power spectrum from averaged magnetisation.
+    freqs = get_fft_frequencies(data_reader, unit='GHz')
+    dt = data_reader.get_dt()
+    psd1 = get_spectrum_via_method_1(mys, dt)
+
+    # Plot magnetisation dynamics and power spectrum into two subplots.
     fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
-    ax1.plot(ts, my)
+
+    ax1.plot(ts, mys)
     ax1.set_xlabel('Time (ns)')
     ax1.set_ylabel('Magnetisation in Y')
     ax1.set_xlim([0, 2.5])
-
-    freqs = get_fft_frequencies(data_reader, unit='GHz')
-    psd1 = get_spectrum_via_method_1(my, dt)
 
     ax2.plot(freqs, psd1, '-', label='Real')
     ax2.set_xlabel('Frequency (GHz)')
@@ -75,12 +79,17 @@ def make_figure3(data_reader):
     via method 1 and 2 (as described in section C1 and C2).
     """
     dt = data_reader.get_dt()
-    my_avg = data_reader.get_average_magnetisation('y')
-    my_full = data_reader.get_spatially_resolved_magnetisation('y')
-    freqs = get_fft_frequencies(data_reader, unit='GHz')
-    psd1 = get_spectrum_via_method_1(my_avg, dt)
-    psd2 = get_spectrum_via_method_2(my_full, dt)
 
+    # Read average and spatially resolved magnetisation (y-component).
+    mys_avg = data_reader.get_average_magnetisation('y')
+    mys_full = data_reader.get_spatially_resolved_magnetisation('y')
+
+    # Compute frequencies and power spectrum via the two different methods.
+    freqs = get_fft_frequencies(data_reader, unit='GHz')
+    psd1 = get_spectrum_via_method_1(mys_avg, dt)
+    psd2 = get_spectrum_via_method_2(mys_full, dt)
+
+    # Plot both power spectra into the same figure
     fig = plt.figure(figsize=(7, 5.5))
     ax = fig.add_subplot(1, 1, 1)
     ax.plot(freqs, psd1, label='Spatially Averaged')
