@@ -19,6 +19,12 @@ OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
 set -o nounset
 set -o errexit
 
+if [ -z "${OOMMFTCL+1}" ]; then
+    echo "Please set the environment variable OOMMFTCL to point"
+    echo "to the file 'oommf.tcl' in your OOMMF installation."
+    exit
+fi
+
 # Abort if output directory already exists to avoid overwriting existing data
 if [ -d "$OUTPUT_DIR" ]; then
     echo "Warning: Output directory already exists: '$OUTPUT_DIR'"
