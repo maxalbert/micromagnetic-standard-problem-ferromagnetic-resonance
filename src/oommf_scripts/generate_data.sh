@@ -10,7 +10,7 @@
 # environment variable OUTPUT_DIR (if not specified then the default
 # value '../../data-generated/oommf' is used).
 
-OUTPUT_DIR=${OUTPUT_DIR:-../../data-generated-oommf}
+OUTPUT_DIR=${OUTPUT_DIR:-../../data-generated/oommf}
 TIMESTAMP=$(date)
 OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
 
@@ -19,7 +19,15 @@ OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
 set -o nounset
 set -o errexit
 
-# Create output directory if it does not exist yet
+# Abort if output directory already exists to avoid overwriting existing data
+if [ -d "$OUTPUT_DIR" ]; then
+    echo "Warning: Output directory already exists: '$OUTPUT_DIR'"
+    echo "         Please delete it or specify a different directory"
+    echo "         by setting the environment variable OUTPUT_DIR."
+    exit
+fi
+
+# Create output directory
 mkdir -p $OUTPUT_DIR
 
 # Copy scripts from source directory to output directory
