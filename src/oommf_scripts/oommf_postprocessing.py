@@ -1,12 +1,18 @@
 import glob
 import numpy as np
 
-omf_files = glob.glob('dynamic*.omf')
-omf_files.sort()
+omf_files = sorted(glob.glob('dynamic*.omf'))
 
+nx = 24
+ny = 24
+
+# Read magnetisation snapshots from all .omf files
+# and store them in three arrays `mxs`, `mys`, `mzs`
+# of shape NUM_TIMESTEPS x NUM_CELLS.
 mxs = []
 mys = []
 mzs = []
+
 for omf_file in omf_files:
     d = np.loadtxt(omf_file)
     mxs.append(d[:, 0])
@@ -17,12 +23,26 @@ mxs = np.array(mxs, dtype=np.float16)
 mys = np.array(mys, dtype=np.float16)
 mzs = np.array(mzs, dtype=np.float16)
 
-numMags = mxs.shape[1] / 2.
 
-mxs = 0.5 * (mxs[:, :numMags] + mxs[:, numMags:])
-mys = 0.5 * (mys[:, :numMags] + mys[:, numMags:])
-mzs = 0.5 * (mzs[:, :numMags] + mzs[:, numMags:])
+# Compute the average of the magnetisation values in the
+# top and bottom layer of the sample. Note that the way
+# we compute this relies on the way in which OOMMF orders
+# the magnetisation values.
 
-np.save('mxs.npy', mxs)
-np.save('mys.npy', mys)
-np.save('mzs.npy', mzs)
+_, numMags = mxs.shape
+numMagsPerLayer = numMags // 2
+
+mxsTop = mxs[:, :numMagsPerLayer]
+mysTop = mys[:, :numMagsPerLayer]
+mzsTop = mzs[:, :numMagsPerLayer]
+mxsBottom = mxs[:, numMagsPerLayer:]
+mysBottom = mys[:, numMagsPerLayer:]
+mzsBottom = mzs[:, numMagsPerLayer:]
+
+mxs_sampled = 0.5 * (mxsTop + mxsBottom).reshape((-1, nx, ny))
+mys_sampled = 0.5 * (mysTop + mysBottom).reshape((-1, nx, ny))
+mzs_sampled = 0.5 * (mzsTop + mzsBottom).reshape((-1, nx, ny))
+
+np.save('mxs.npy', mxs_sampled)
+np.save('mys.npy', mys_sampled)
+np.save('mzs.npy', mzs_sampled)
