@@ -40,7 +40,7 @@ Specify Oxs_RungeKuttaEvolve {
 # Driver parameters
 Specify Oxs_TimeDriver {
     evolver Oxs_RungeKuttaEvolve
-    stopping_time 5e-12
+    stopping_time 5e-9
     stage_count 1
     mesh :mesh
     Ms 8.0e5
