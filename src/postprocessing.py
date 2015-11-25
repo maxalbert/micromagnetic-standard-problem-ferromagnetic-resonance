@@ -14,7 +14,6 @@ import matplotlib.gridspec as gridspec
 from matplotlib import cm
 
 from transform_data import fft      # TODO: remove!
-from transform_data import get_spectrum_via_method_2
 from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
 
@@ -72,7 +71,7 @@ def make_figure3(data_reader, component='y'):
     # Compute frequencies and power spectrum via the two different methods.
     freqs = data_reader.get_fft_frequencies(unit='GHz')
     psd1 = data_reader.get_spectrum_via_method_1(component)
-    psd2 = get_spectrum_via_method_2(mys_full, dt)
+    psd2 = data_reader.get_spectrum_via_method_2(component)
 
     # Plot both power spectra into the same figure
     fig = plt.figure(figsize=(7, 5.5))

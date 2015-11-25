@@ -154,3 +154,42 @@ class DataReader(object):
         psd_data_avg = np.abs(ft_data_avg)**2
         # FIXME: We ignore the last element for now so that we can compare with the existing data.
         return psd_data_avg[:-1]
+
+    def get_spectrum_via_method_2(self, component):
+        r"""Compute power spectrum from spatially resolved magnetisation dynamics.
+
+        The returned array contains the power spectral densities `\tilde{S}_y(f)`
+        as defined in Eq. (5) of the paper.
+
+        Parameters
+        ----------
+        data :  2D numpy array
+
+            Time series representing dynamics of a single component
+            of the spatially resolved magnetisation. It is assumed
+            that time is along the first dimension, i.e. `data[k, j]`
+            contains the magnetisation at timestep `t_k` for the
+            grid point `r_j`.
+
+        dt :  float
+
+            Size of the timestep at which the magnetisation was sampled
+            during the simulation (e.g. `dt=5e-12` for every 5 ps).
+
+        Returns
+        -------
+        Pair of `numpy.array`s
+
+            Frequencies and power spectral densities of the magnetisation
+            data. Note that the frequencies are returned in GHz (not Hz).
+        """
+        data = self.get_spatially_resolved_magnetisation(component)
+        dt = self.get_dt()
+        n = self.get_num_timesteps()
+
+        freqs = np.fft.rfftfreq(n, dt)
+        ft_data = np.fft.rfft(data, axis=0)
+        psd_data = np.abs(ft_data)**2
+        psd_data_avg = np.average(psd_data, axis=1)
+        # FIXME: We ignore the last element for now so that we can compare with the existing data.
+        return psd_data_avg[:-1]
