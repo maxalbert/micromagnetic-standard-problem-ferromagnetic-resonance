@@ -1,12 +1,15 @@
 import sys; sys.path.insert(0, '..')
 import numpy as np
+import os
 from data_reader import DataReader
 
+here = os.path.abspath(os.path.dirname(__file__))
 
 class TestDataReader(object):
     @classmethod
     def setup_class(cls):
-        cls.data_reader = DataReader('./sample_data/oommf', software='OOMMF')
+        datafile = os.path.join(here, 'sample_data', 'oommf')
+        cls.data_reader = DataReader(datafile, software='OOMMF')
 
     def test_get_timesteps(self):
         ts = self.data_reader.get_timesteps()
