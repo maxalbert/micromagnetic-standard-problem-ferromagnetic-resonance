@@ -5,8 +5,48 @@ import numpy as np
 from matplotlib import cm
 
 
+def rescale_cmap(cmap_name, low=0.0, high=1.0, plot=False):
+    import matplotlib._cm as _cm
+    '''
+    Example 1:
+    # equivalent scaling to cplot_like(blah, l_bias=0.33, int_exponent=0.0)
+    my_hsv = rescale_cmap('hsv', low = 0.3)
+    Example 2:
+    my_hsv = rescale_cmap(cm.hsv, low = 0.3)
+    '''
+    if type(cmap_name) is str:
+        cmap = eval('_cm._%s_data' % cmap_name)
+    else:
+        cmap = eval('_cm._%s_data' % cmap_name.name)
+    LUTSIZE = plt.rcParams['image.lut']
+    r = np.array(cmap['red'])
+    g = np.array(cmap['green'])
+    b = np.array(cmap['blue'])
+    range = high - low
+    r[:, 1:] = r[:, 1:] * range + low
+    g[:, 1:] = g[:, 1:] * range + low
+    b[:, 1:] = b[:, 1:] * range + low
+    _my_data = {'red': tuple(map(tuple, r)),
+                'green': tuple(map(tuple, g)),
+                'blue': tuple(map(tuple, b))
+                }
+    my_cmap = mpl.colors.LinearSegmentedColormap('my_hsv', _my_data, LUTSIZE)
+
+    if plot:
+        print('plotting')
+        plt.figure()
+        plt.plot(r[:, 0], r[:, 1], 'r', g[:, 0], g[:, 1], 'g', b[:, 0],
+                 b[:, 1], 'b', lw=3)
+        plt.axis(ymin=-0.2, ymax=1.2)
+        plt.show()
+
+    return my_cmap
+
+my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
+
+
 class EigenmodePlotter(object):
-    def __init__(self, data_reader, cmap_amplitude, cmap_phase):
+    def __init__(self, data_reader, cmap_amplitude=cm.coolwarm, cmap_phase=my_hsv):
         self.data_reader = data_reader
         self.cmap_amplitude = cmap_amplitude
         self.cmap_phase = cmap_phase

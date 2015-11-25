@@ -90,43 +90,6 @@ def make_figure3(data_reader, component='y'):
 
 def make_figure4_and_5(data_reader, software):
 
-    def rescale_cmap(cmap_name, low=0.0, high=1.0, plot=False):
-        import matplotlib._cm as _cm
-        '''
-        Example 1:
-        # equivalent scaling to cplot_like(blah, l_bias=0.33, int_exponent=0.0)
-        my_hsv = rescale_cmap('hsv', low = 0.3)
-        Example 2:
-        my_hsv = rescale_cmap(cm.hsv, low = 0.3)
-        '''
-        if type(cmap_name) is str:
-            cmap = eval('_cm._%s_data' % cmap_name)
-        else:
-            cmap = eval('_cm._%s_data' % cmap_name.name)
-        LUTSIZE = plt.rcParams['image.lut']
-        r = np.array(cmap['red'])
-        g = np.array(cmap['green'])
-        b = np.array(cmap['blue'])
-        range = high - low
-        r[:, 1:] = r[:, 1:] * range + low
-        g[:, 1:] = g[:, 1:] * range + low
-        b[:, 1:] = b[:, 1:] * range + low
-        _my_data = {'red': tuple(map(tuple, r)),
-                    'green': tuple(map(tuple, g)),
-                    'blue': tuple(map(tuple, b))
-                    }
-        my_cmap = mpl.colors.LinearSegmentedColormap('my_hsv', _my_data, LUTSIZE)
-
-        if plot:
-            print('plotting')
-            plt.figure()
-            plt.plot(r[:, 0], r[:, 1], 'r', g[:, 0], g[:, 1], 'g', b[:, 0],
-                     b[:, 1], 'b', lw=3)
-            plt.axis(ymin=-0.2, ymax=1.2)
-            plt.show()
-
-        return my_cmap
-
     # Different simulation tools produce slightly different peaks:
     if software.lower() == 'OOMMF'.lower():
         peaks = [8.25e9, 11.25e9, 13.9e9]
@@ -141,10 +104,7 @@ def make_figure4_and_5(data_reader, software):
     n = len(ts)
 
     res_figs = []
-    my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
-    cmap_amplitude = cm.coolwarm
-    cmap_phase = my_hsv
-    eigenmode_plotter = EigenmodePlotter(data_reader, cmap_amplitude, cmap_phase)
+    eigenmode_plotter = EigenmodePlotter(data_reader)
 
     for peak, fignum in zip(peaks, ['4', '5']):
         figname = "figure{}_{}.pdf".format(fignum, software)
