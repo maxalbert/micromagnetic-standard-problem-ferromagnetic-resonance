@@ -14,12 +14,12 @@ import matplotlib.gridspec as gridspec
 from matplotlib import cm
 
 from transform_data import fft      # TODO: remove!
-from transform_data import get_spectrum_via_method_1, get_spectrum_via_method_2
+from transform_data import get_spectrum_via_method_2
 from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
 
 
-def make_figure2(data_reader):
+def make_figure2(data_reader, component='y'):
     """
     Create Fig. 2 in the paper.
 
@@ -29,12 +29,12 @@ def make_figure2(data_reader):
     """
     # Read timesteps and spatially averaged magnetisation (y-component).
     ts = data_reader.get_timesteps(unit='ns')
-    mys = data_reader.get_average_magnetisation('y')
+    mys = data_reader.get_average_magnetisation(component)
 
     # Compute power spectrum from averaged magnetisation.
     freqs = data_reader.get_fft_frequencies(unit='GHz')
     dt = data_reader.get_dt()
-    psd = get_spectrum_via_method_1(mys, dt)
+    psd = data_reader.get_spectrum_via_method_1(component)
 
     # Plot magnetisation dynamics and power spectrum into two subplots.
     fig, (ax1, ax2) = plt.subplots(nrows=2, ncols=1, figsize=(8, 6))
@@ -55,7 +55,7 @@ def make_figure2(data_reader):
     return fig
 
 
-def make_figure3(data_reader):
+def make_figure3(data_reader, component='y'):
     """
     Create Fig. 3 in the paper.
 
@@ -66,12 +66,12 @@ def make_figure3(data_reader):
     dt = data_reader.get_dt()
 
     # Read average and spatially resolved magnetisation (y-component).
-    mys_avg = data_reader.get_average_magnetisation('y')
-    mys_full = data_reader.get_spatially_resolved_magnetisation('y')
+    mys_avg = data_reader.get_average_magnetisation(component)
+    mys_full = data_reader.get_spatially_resolved_magnetisation(component)
 
     # Compute frequencies and power spectrum via the two different methods.
     freqs = data_reader.get_fft_frequencies(unit='GHz')
-    psd1 = get_spectrum_via_method_1(mys_avg, dt)
+    psd1 = data_reader.get_spectrum_via_method_1(component)
     psd2 = get_spectrum_via_method_2(mys_full, dt)
 
     # Plot both power spectra into the same figure
@@ -221,9 +221,10 @@ if __name__ == '__main__':
     software = args.software
 
     data_reader = DataReader(data_dir='../../data/oommf/', software='OOMMF')
+    component = 'y'
 
     if args.figures:
-        make_figure2(data_reader)
-        make_figure3(data_reader)
+        make_figure2(data_reader, component)
+        make_figure3(data_reader, component)
 
         figure4_and_5(data_reader, software)

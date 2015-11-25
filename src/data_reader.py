@@ -119,3 +119,38 @@ class DataReader(object):
             raise Exception("Failed to find the index of given frequency!")
 
         return i
+
+    def get_spectrum_via_method_1(self, component):
+        """Compute power spectrum from spatially averaged magnetisation dynamics.
+
+        The returned array contains the power spectral densities `S_y(f)` as
+        defined in Eq. (1) of the paper.
+
+        Parameters
+        ----------
+        data_avg :  1D numpy array
+
+            Time series representing dynamics of a single component
+            of the spatially averaged magnetisation (e.g. `m_y`).
+
+        dt :  float
+
+            Size of the timestep at which the magnetisation was sampled
+            during the simulation (e.g. `dt=5e-12` for every 5 ps).
+
+        Returns
+        -------
+        Pair of `numpy.array`s
+
+            Frequencies and power spectral densities of the magnetisation
+            data. Note that the frequencies are returned in GHz (not Hz).
+        """
+        data_avg = self.get_average_magnetisation(component)
+        dt = self.get_dt()
+        n = self.get_num_timesteps()
+
+        freqs = np.fft.rfftfreq(n, dt)
+        ft_data_avg = np.fft.rfft(data_avg)
+        psd_data_avg = np.abs(ft_data_avg)**2
+        # FIXME: We ignore the last element for now so that we can compare with the existing data.
+        return psd_data_avg[:-1]
