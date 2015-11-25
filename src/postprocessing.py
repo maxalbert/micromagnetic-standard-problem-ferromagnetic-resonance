@@ -88,29 +88,28 @@ def make_figure3(data_reader, component='y'):
     return fig
 
 
-def make_figure4_and_5(data_reader, software):
-
-    # Different simulation tools produce slightly different peaks:
-    if software.lower() == 'OOMMF'.lower():
-        peaks = [8.25e9, 11.25e9, 13.9e9]
-    elif software.lower() == 'Nmag'.lower():
-        peaks = [8.1e9, 11.0e9, 13.5e9]
+def make_figure_4(data_reader):
+    if data_reader.software == 'OOMMF':
+        peak_freq = 8.25e9
+    elif data_reader.software == 'Nmag':
+        peak_freq = 8.1e9
     else:
-        raise ValueError(
-            "You must specify the software used to generate the data")
-
-    res_figs = []
+        raise RuntimeError()
     eigenmode_plotter = EigenmodePlotter(data_reader)
+    fig = eigenmode_plotter.plot_mode(peak_freq)
+    return fig
 
-    for peak, fignum in zip(peaks, ['4', '5']):
-        figname = "figure{}_{}.pdf".format(fignum, software)
 
-        peakGHz = str(round((peak * 1e-9), 4))
-
-        fig = eigenmode_plotter.plot_mode(peak)
-        res_figs.append(fig)
-
-    return res_figs
+def make_figure_5(data_reader):
+    if data_reader.software == 'OOMMF':
+        peak_freq = 11.25e9
+    elif data_reader.software == 'Nmag':
+        peak_freq = 11e9
+    else:
+        raise RuntimeError()
+    eigenmode_plotter = EigenmodePlotter(data_reader)
+    fig = eigenmode_plotter.plot_mode(peak_freq)
+    return fig
 
 
 if __name__ == '__main__':
@@ -131,5 +130,5 @@ if __name__ == '__main__':
     if args.figures:
         make_figure2(data_reader, component)
         make_figure3(data_reader, component)
-
-        figure4_and_5(data_reader, software)
+        make_figure4(data_reader)
+        make_figure5(data_reader)
