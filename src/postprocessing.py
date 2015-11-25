@@ -150,14 +150,15 @@ def make_figure4_and_5(data_reader, software):
 
         peakGHz = str(round((peak * 1e-9), 4))
 
+        shape = (nx, ny)
         index = data_reader.find_freq_index(peak, unit='Hz')
-        amp_x = get_mode_amplitudes(data_reader, 'x', index, (nx, ny))
-        amp_y = get_mode_amplitudes(data_reader, 'y', index, (nx, ny))
-        amp_z = get_mode_amplitudes(data_reader, 'z', index, (nx, ny))
+        amp_x = data_reader.get_mode_amplitudes(peak, 'x').reshape(shape)
+        amp_y = data_reader.get_mode_amplitudes(peak, 'y').reshape(shape)
+        amp_z = data_reader.get_mode_amplitudes(peak, 'z').reshape(shape)
 
-        phase_x = get_mode_phases(data_reader, 'x', index, (nx, ny))
-        phase_y = get_mode_phases(data_reader, 'y', index, (nx, ny))
-        phase_z = get_mode_phases(data_reader, 'z', index, (nx, ny))
+        phase_x = data_reader.get_mode_phases(peak, 'x').reshape(shape)
+        phase_y = data_reader.get_mode_phases(peak, 'y').reshape(shape)
+        phase_z = data_reader.get_mode_phases(peak, 'z').reshape(shape)
 
         # Ensure that all three amplitude plots are on the same scale:
         minVal = np.min([amp_x, amp_y, amp_z])

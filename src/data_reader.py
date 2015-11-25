@@ -130,6 +130,19 @@ class DataReader(object):
         fft_coeffs = np.fft.rfft(m_vals, axis=0)
         return fft_coeffs
 
+    def get_FFT_coeffs_for_frequency(self, freq, component):
+        fft_coeffs = self.get_FFT_coeffs_of_spatially_resolved_m(component)
+        idx = self.find_freq_index(freq)
+        return fft_coeffs[idx, :]
+
+    def get_mode_amplitudes(self, freq, component):
+        fft_coeffs_mode = self.get_FFT_coeffs_for_frequency(freq, component)
+        return np.absolute(fft_coeffs_mode)
+
+    def get_mode_phases(self, freq, component):
+        fft_coeffs_mode = self.get_FFT_coeffs_for_frequency(freq, component)
+        return np.angle(fft_coeffs_mode)
+
     def get_spectrum_via_method_1(self, component):
         """Compute power spectrum from spatially averaged magnetisation dynamics.
 
