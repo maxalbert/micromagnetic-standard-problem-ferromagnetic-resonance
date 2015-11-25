@@ -99,10 +99,6 @@ def make_figure4_and_5(data_reader, software):
         raise ValueError(
             "You must specify the software used to generate the data")
 
-    ts = data_reader.get_timesteps(unit='ns')
-    dt = data_reader.get_dt()
-    n = len(ts)
-
     res_figs = []
     eigenmode_plotter = EigenmodePlotter(data_reader)
 
