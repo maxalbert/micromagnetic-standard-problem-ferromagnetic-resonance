@@ -83,6 +83,12 @@ def make_figure3(data_reader, component='y'):
 
 
 def make_figure_4(data_reader):
+    """
+    Create Fig. 4 in the paper.
+
+    Returns a matplotlib figure with two rows displaying, respectively, the
+    amplitude and phase of the x/y/z component of the first eigenmode.
+    """
     if data_reader.software == 'OOMMF':
         peak_freq = 8.25e9
     elif data_reader.software == 'Nmag':
@@ -95,6 +101,12 @@ def make_figure_4(data_reader):
 
 
 def make_figure_5(data_reader):
+    """
+    Create Fig. 5 in the paper.
+
+    Returns a matplotlib figure with two rows displaying, respectively, the
+    amplitude and phase of the x/y/z component of the second eigenmode.
+    """
     if data_reader.software == 'OOMMF':
         peak_freq = 11.25e9
     elif data_reader.software == 'Nmag':
