@@ -2,7 +2,7 @@
 .PHONY: data_clean
 
 transform_data = mxs_ft_abs.npy mys_ft_abs.npy mzs_ft_abs.npy\
-	             mxs_ft_phase.npy mys_ft_phase.npy mzs_ft_phase.npy\
+                 mxs_ft_phase.npy mys_ft_phase.npy mzs_ft_phase.npy\
 
 all: data figures
 
