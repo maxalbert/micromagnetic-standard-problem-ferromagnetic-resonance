@@ -10,12 +10,12 @@ matplotlib.use('Agg')
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
 from matplotlib import cm
 
 from transform_data import fft      # TODO: remove!
 from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
+from eigenmode_plotter import EigenmodePlotter
 
 
 def make_figure2(data_reader, component='y'):
@@ -140,69 +140,18 @@ def make_figure4_and_5(data_reader, software):
     dt = data_reader.get_dt()
     n = len(ts)
 
-    nx = 24
-    ny = 24
-
     res_figs = []
+    my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
+    cmap_amplitude = cm.coolwarm
+    cmap_phase = my_hsv
+    eigenmode_plotter = EigenmodePlotter(data_reader, cmap_amplitude, cmap_phase)
 
     for peak, fignum in zip(peaks, ['4', '5']):
         figname = "figure{}_{}.pdf".format(fignum, software)
 
         peakGHz = str(round((peak * 1e-9), 4))
 
-        shape = (nx, ny)
-        index = data_reader.find_freq_index(peak, unit='Hz')
-        amp_x = data_reader.get_mode_amplitudes(peak, 'x').reshape(shape)
-        amp_y = data_reader.get_mode_amplitudes(peak, 'y').reshape(shape)
-        amp_z = data_reader.get_mode_amplitudes(peak, 'z').reshape(shape)
-
-        phase_x = data_reader.get_mode_phases(peak, 'x').reshape(shape)
-        phase_y = data_reader.get_mode_phases(peak, 'y').reshape(shape)
-        phase_z = data_reader.get_mode_phases(peak, 'z').reshape(shape)
-
-        # Ensure that all three amplitude plots are on the same scale:
-        minVal = np.min([amp_x, amp_y, amp_z])
-        maxVal = np.max([amp_x, amp_y, amp_z])
-
-        fig = plt.figure(figsize=(8, 6))
-        gs = gridspec.GridSpec(2, 4, width_ratios=[4, 4, 4, 0.5],
-                               height_ratios=[4, 4])
-
-        my_hsv = rescale_cmap(cm.hsv, low=0.3, high=0.8, plot=False)
-
-        def plot_mode_component(gs, data, label, vmin, vmax, cmap):
-            ax = fig.add_subplot(gs)
-            ax.imshow(data, cmap=cmap, vmin=vmin, vmax=vmax, origin='lower')
-            ax.set_title(label)
-            ax.set_xticks([])
-            ax.set_yticks([])
-
-        def plot_colorbar(gs, label, cmap, vmin, vmax, num_ticks, ticklabels=None):
-            ax = fig.add_subplot(gs)
-            norm = mpl.colors.Normalize(vmin=vmin, vmax=vmax)
-            ticks = np.linspace(vmin, vmax, num_ticks)
-            cbar = mpl.colorbar.ColorbarBase(
-                       ax, cmap, norm=norm, orientation='vertical', ticks=ticks)
-            cbar.set_label(label)
-            if ticklabels:
-                cbar.ax.set_yticklabels(ticklabels)
-
-        cmap_amplitude = cm.coolwarm
-        cmap_phase = my_hsv
-
-        plot_mode_component(gs[0], amp_x, 'x', cmap=cmap_amplitude, vmin=minVal, vmax=maxVal)
-        plot_mode_component(gs[1], amp_y, 'y', cmap=cmap_amplitude, vmin=minVal, vmax=maxVal)
-        plot_mode_component(gs[2], amp_z, 'z', cmap=cmap_amplitude, vmin=minVal, vmax=maxVal)
-        plot_colorbar(gs[3], 'Amplitude', cmap_amplitude, vmin=0, vmax=maxVal, num_ticks=5)
-
-        plot_mode_component(gs[4], phase_x, 'x', cmap=cmap_phase, vmin=-np.pi, vmax=+np.pi)
-        plot_mode_component(gs[5], phase_y, 'y', cmap=cmap_phase, vmin=-np.pi, vmax=+np.pi)
-        plot_mode_component(gs[6], phase_z, 'z', cmap=cmap_phase, vmin=-np.pi, vmax=+np.pi)
-        plot_colorbar(gs[7], 'Phase', cmap_phase, vmin=-np.pi, vmax=np.pi, num_ticks=3, ticklabels=['-3.14', '0', '-3.14'])
-
-        fig.subplots_adjust(left=0.1, bottom=0.1, right=0.95, wspace=0.1)
-        fig.suptitle('%s GHz' % peakGHz, fontsize=20)
-        fig.tight_layout()
+        fig = eigenmode_plotter.plot_mode(peak)
         res_figs.append(fig)
 
     return res_figs
