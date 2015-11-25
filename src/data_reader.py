@@ -120,6 +120,16 @@ class DataReader(object):
 
         return i
 
+    def get_FFT_coeffs_of_average_m(self, component):
+        m_vals = self.get_average_magnetisation(component)
+        fft_coeffs = np.fft.rfft(m_vals, axis=0)
+        return fft_coeffs
+
+    def get_FFT_coeffs_of_spatially_resolved_m(self, component):
+        m_vals = self.get_spatially_resolved_magnetisation(component)
+        fft_coeffs = np.fft.rfft(m_vals, axis=0)
+        return fft_coeffs
+
     def get_spectrum_via_method_1(self, component):
         """Compute power spectrum from spatially averaged magnetisation dynamics.
 
@@ -145,13 +155,8 @@ class DataReader(object):
             Frequencies and power spectral densities of the magnetisation
             data. Note that the frequencies are returned in GHz (not Hz).
         """
-        data_avg = self.get_average_magnetisation(component)
-        dt = self.get_dt()
-        n = self.get_num_timesteps()
-
-        freqs = np.fft.rfftfreq(n, dt)
-        ft_data_avg = np.fft.rfft(data_avg)
-        psd_data_avg = np.abs(ft_data_avg)**2
+        fft_data_avg = self.get_FFT_coeffs_of_average_m(component)
+        psd_data_avg = np.abs(fft_data_avg)**2
         # FIXME: We ignore the last element for now so that we can compare with the existing data.
         return psd_data_avg[:-1]
 
@@ -183,13 +188,8 @@ class DataReader(object):
             Frequencies and power spectral densities of the magnetisation
             data. Note that the frequencies are returned in GHz (not Hz).
         """
-        data = self.get_spatially_resolved_magnetisation(component)
-        dt = self.get_dt()
-        n = self.get_num_timesteps()
-
-        freqs = np.fft.rfftfreq(n, dt)
-        ft_data = np.fft.rfft(data, axis=0)
-        psd_data = np.abs(ft_data)**2
-        psd_data_avg = np.average(psd_data, axis=1)
+        fft_data_full = self.get_FFT_coeffs_of_spatially_resolved_m(component)
+        psd_data_full = np.abs(fft_data_full)**2
+        psd_data_avg = np.average(psd_data_full, axis=1)
         # FIXME: We ignore the last element for now so that we can compare with the existing data.
         return psd_data_avg[:-1]
