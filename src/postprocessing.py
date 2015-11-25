@@ -1,19 +1,13 @@
 #! /usr/bin/env python
 
 """ Collection of all the common tools used in the project """
-import os
-import argparse
-
-import numpy as np
 import matplotlib
-matplotlib.use('Agg')
+matplotlib.use('agg')
 
-import matplotlib as mpl
+import argparse
 import matplotlib.pyplot as plt
-from matplotlib import cm
+import numpy as np
 
-from transform_data import fft      # TODO: remove!
-from transform_data import get_mode_amplitudes, get_mode_phases
 from data_reader import DataReader
 from eigenmode_plotter import EigenmodePlotter
 
