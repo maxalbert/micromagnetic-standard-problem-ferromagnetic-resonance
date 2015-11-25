@@ -1,17 +1,23 @@
 #!/bin/bash
 
+# This script runs two OOMMF scripts (for the relaxation and dynamic
+# simulation stage, respectively) as well as a postprocessing script.
+# This generates various data files containing the dynamics of the
+# spatially averaged and spatially resolved magnetisation which are
+# used in the visualiation and reproducibility tests.
+#
+# The generated data will be placed in the directory given by the
+# environment variable OUTPUT_DIR (if not specified then the default
+# value '../../data-generated/oommf' is used).
+
+OUTPUT_DIR=${OUTPUT_DIR:-../../data-generated-oommf}
+TIMESTAMP=$(date)
+OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
+
 # Raise error when a variable is not set, and exit as soon as any
 # error occurs in the script.
 set -o nounset
 set -o errexit
-
-# Define relevant variables; the variable OUTPUT_DIR uses the
-# default value '../../data-generated-oommf' but can be set
-# by the user before running the script, in which case it will
-# use the user-defined value.
-OOMMF_SCRIPTS="relaxation_stage.mif dynamic_stage.mif oommf_postprocessing.py"
-OUTPUT_DIR=${OUTPUT_DIR:-../../data-generated-oommf}
-TIMESTAMP=$(date)
 
 # Create output directory if it does not exist yet
 mkdir -p $OUTPUT_DIR
