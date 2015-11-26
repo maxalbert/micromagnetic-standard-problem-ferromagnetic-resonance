@@ -17,8 +17,8 @@ class TestCompareData(object):
 
     def test_compare_average_magnetisation(self):
         for component in ['x', 'y', 'z']:
-            m1_avg = self.d1.get_average_magnetisation(component)
-            m2_avg = self.d2.get_average_magnetisation(component)
+            m1_avg = self.d1.get_average_magnetisation(component).astype('float')
+            m2_avg = self.d2.get_average_magnetisation(component).astype('float')
             diff = abs(m1_avg - m2_avg)
             print("Diff norm: {}, m1_avg norm: {}, m2_avg norm: {}".format(
                   np.linalg.norm(diff),
@@ -26,11 +26,10 @@ class TestCompareData(object):
                   np.linalg.norm(m2_avg)))
             assert np.allclose(m1_avg, m2_avg, atol=1e-7, rtol=0)
 
-
     def test_compare_spatially_resolved_magnetisation(self):
         for component in ['x', 'y', 'z']:
-            m1_full = self.d1.get_average_magnetisation(component)
-            m2_full = self.d2.get_average_magnetisation(component)
+            m1_full = self.d1.get_average_magnetisation(component).astype('float')
+            m2_full = self.d2.get_average_magnetisation(component).astype('float')
             diff = abs(m1_full - m2_full)
             print("Diff norm: {}, m1_full norm: {}, m2_full norm: {}".format(
                   np.linalg.norm(diff),
