@@ -28,8 +28,8 @@ class TestCompareData(object):
 
     def test_compare_spatially_resolved_magnetisation(self):
         for component in ['x', 'y', 'z']:
-            m1_full = self.d1.get_average_magnetisation(component).astype('float')
-            m2_full = self.d2.get_average_magnetisation(component).astype('float')
+            m1_full = self.d1.get_spatially_resolved_magnetisation(component).astype('float')
+            m2_full = self.d2.get_spatially_resolved_magnetisation(component).astype('float')
             diff = abs(m1_full - m2_full)
             print("Diff norm: {}, m1_full norm: {}, m2_full norm: {}".format(
                   np.linalg.norm(diff),
