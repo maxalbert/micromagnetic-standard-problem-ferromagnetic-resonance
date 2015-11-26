@@ -34,5 +34,5 @@ test:
     - oommf +version
     - make -C src/oommf_scripts data
     - head -n 20 data-generated/oommf/dynamic_txyz.txt
-    - make -C test
+    - make test
     - echo "Test build succeeded."
