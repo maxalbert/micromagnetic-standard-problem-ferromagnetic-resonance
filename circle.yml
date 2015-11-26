@@ -6,7 +6,7 @@ machine:
 
 general:
   artifacts:
-    - "data-generated-oommf/"
+    - "data-generated/oommf/"
     
 dependencies:
   # Note, we used to use the naive caching of docker images, but found that
@@ -33,5 +33,5 @@ test:
     - tclsh ${OOMMFTCL} +version
     - oommf +version
     - make -C src/oommf_scripts data
-    - head -n 20 data-generated-oommf/dynamic_txyz.txt
+    - head -n 20 data-generated/oommf/dynamic_txyz.txt
     - echo "Test build succeeded."
