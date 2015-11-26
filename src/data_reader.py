@@ -79,11 +79,11 @@ class DataReader(object):
 
     def get_spatially_resolved_magnetisation(self, component):
         """
-        Return a 2D numpy array containing the values of the
-        spatially resolved magnetization sampled at the time-
-        steps during the simulation. The time dimension is
-        along the first axis (i.e., `m[:, j]` is the time
-        series of the magnetisation at the j-th grid point).
+        Return a numpy array of shape (N, nx, ny) containing the values
+        of the spatially resolved magnetization sampled at all N timesteps
+        the simulation. The time dimension is along the first axis - i.e.,
+        `m[:, i, j]` is the time series of the magnetisation at the grid
+        point (i, j).
         """
         filename = os.path.join(self.data_dir, 'm{}s.npy'.format(component))
         return np.load(filename)
@@ -203,6 +203,6 @@ class DataReader(object):
         """
         fft_data_full = self.get_FFT_coeffs_of_spatially_resolved_m(component)
         psd_data_full = np.abs(fft_data_full)**2
-        psd_data_avg = np.average(psd_data_full, axis=1)
+        psd_data_avg = np.mean(psd_data_full, axis=(1, 2))
         # FIXME: We ignore the last element for now so that we can compare with the existing data.
         return psd_data_avg[:-1]
