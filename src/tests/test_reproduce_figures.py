@@ -7,7 +7,8 @@ from data_reader import DataReader
 TOL = 0.  # we expect exact equality in the image comparison
 
 here = os.path.abspath(os.path.dirname(__file__))
-data_dir = os.path.join(here, '..', '..', 'data', 'oommf')
+data_dir = os.path.join(here, '..', '..', 'data-generated', 'oommf')
+
 
 @image_comparison(baseline_images=['figure2_OOMMF'], extensions=['png', 'pdf'], tol=TOL)
 def test_reproduce_figure_2():
