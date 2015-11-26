@@ -86,7 +86,9 @@ class DataReader(object):
         point (i, j).
         """
         filename = os.path.join(self.data_dir, 'm{}s.npy'.format(component))
-        return np.load(filename)
+        m = np.load(filename)
+        assert m.ndim == 3
+        return m
 
     def get_fft_frequencies(self, unit='Hz'):
         if unit == 'Hz':
