@@ -7,6 +7,7 @@ machine:
 general:
   artifacts:
     - "data-generated/oommf/"
+    - "src/tests/result_images/test_reproduce_figures/"
     
 dependencies:
   # Note, we used to use the naive caching of docker images, but found that
@@ -35,5 +36,5 @@ test:
     - oommf +version
     - make -C src/oommf_scripts data
     - head -n 20 data-generated/oommf/dynamic_txyz.txt
-    - make test
+    - cd src/tests && nosetests -sv
     - echo "Test build succeeded."
