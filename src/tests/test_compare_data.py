@@ -24,7 +24,7 @@ class TestCompareData(object):
                   np.linalg.norm(diff),
                   np.linalg.norm(m1_avg),
                   np.linalg.norm(m2_avg)))
-            assert np.allclose(m1_avg, m2_avg)
+            assert np.allclose(m1_avg, m2_avg, atol=1e-7, rtol=0)
 
 
     def test_compare_spatially_resolved_magnetisation(self):
@@ -36,4 +36,4 @@ class TestCompareData(object):
                   np.linalg.norm(diff),
                   np.linalg.norm(m1_full),
                   np.linalg.norm(m2_full)))
-            assert np.allclose(m1_full, m2_full)
+            assert np.allclose(m1_full, m2_full, atol=1e-4, rtol=0)
