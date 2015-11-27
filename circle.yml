@@ -24,7 +24,7 @@ dependencies:
     - conda info -a
 
     # Install OOMMF and relevant Python packages
-    - conda install -c http://conda.anaconda.org/maxalbert numpy pip nose oommf=12a6_20150930
+    - conda install -c http://conda.anaconda.org/maxalbert numpy pip nose oommf=12a5bis_20120928
     - pip install git+https://github.com/matplotlib/matplotlib.git
 
 test:
