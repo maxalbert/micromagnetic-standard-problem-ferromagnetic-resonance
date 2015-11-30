@@ -25,9 +25,12 @@ mzs = np.array(mzs)
 
 
 # Compute the average of the magnetisation values in the
-# top and bottom layer of the sample. Note that the way
-# we compute this relies on the way in which OOMMF orders
-# the magnetisation values.
+# top and bottom layer of the sample. Note that the way we
+# compute this relies on the fact that OOMMF orders the
+# magnetisation values such that the z-index is incremented
+# last (see [1], section "Data block").
+#
+# [1] http://math.nist.gov/oommf/doc/userguide12a6/userguide/OVF_1.0_format.html
 
 _, numMags = mxs.shape
 numMagsPerLayer = numMags // 2
