@@ -19,9 +19,9 @@ for omf_file in omf_files:
     mys.append(d[:, 1])
     mzs.append(d[:, 2])
 
-mxs = np.array(mxs, dtype=np.float16)
-mys = np.array(mys, dtype=np.float16)
-mzs = np.array(mzs, dtype=np.float16)
+mxs = np.array(mxs)
+mys = np.array(mys)
+mzs = np.array(mzs)
 
 
 # Compute the average of the magnetisation values in the
