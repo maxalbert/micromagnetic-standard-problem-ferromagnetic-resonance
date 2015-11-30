@@ -2,6 +2,17 @@ import numpy as np
 import os
 
 
+def _convert_to_unit(val, unit):
+    if unit == 's':
+        return val
+    elif unit == 'ns':
+        return val * 1e9
+    else:
+        msg = ("The argument `unit` must be either 's' (= seconds) "
+               "or 'ns' (= nanoseconds). Got: '{}'".format(unit))
+        raise ValueError(msg)
+
+
 class DataReader(object):
     """
     This class facilitates loading of raw data (as produced
@@ -16,17 +27,6 @@ class DataReader(object):
         data_avg_filename = os.path.join(self.data_dir, 'dynamic_txyz.txt')
         self.data_avg = np.loadtxt(data_avg_filename)
 
-    @staticmethod
-    def _convert_to_unit(val, unit):
-        if unit == 's':
-            return val
-        elif unit == 'ns':
-            return val * 1e9
-        else:
-            msg = ("The argument `unit` must be either 's' (= seconds) "
-                   "or 'ns' (= nanoseconds). Got: '{}'".format(unit))
-            raise ValueError(msg)
-
     def get_timesteps(self, unit='s'):
         """
         Return a 1D numpy array containing the timesteps at which
@@ -37,7 +37,7 @@ class DataReader(object):
         """
         # Timestamps are contained in the first column of the averaged data
         timesteps = self.data_avg[:, 0]
-        return self._convert_to_unit(timesteps, unit)
+        return _convert_to_unit(timesteps, unit)
 
     def get_num_timesteps(self):
         return len(self.get_timesteps())
@@ -52,7 +52,7 @@ class DataReader(object):
         """
         ts = self.get_timesteps()
         dt = ts[1] - ts[0]
-        return self._convert_to_unit(dt, unit)
+        return _convert_to_unit(dt, unit)
 
     @staticmethod
     def _get_index_of_m_avg_component(component):
